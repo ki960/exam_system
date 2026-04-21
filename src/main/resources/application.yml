@@ -1,6 +1,14 @@
 server:
   port: 8080
 spring:
+  servlet:
+    multipart:
+      # 单个文件最大大小（根据需要调整，这里设为 50MB）
+      max-file-size: 50MB
+      # 单次请求最大大小（所有文件总和，这里设为 100MB）
+      max-request-size: 100MB
+      # 启用文件上传支持（默认开启，可省略）
+      enabled: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -25,3 +33,9 @@ mybatis-plus:
   glogal-config:
       db-config:
         logic-delete-field: isDeleted
+
+minio:
+  endpoint: http://192.168.150.101:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: exam-system
