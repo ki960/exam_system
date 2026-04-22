@@ -2,10 +2,13 @@ package com.atguigu.exam.controller;
 
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.Category;
+import com.atguigu.exam.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +19,13 @@ import java.util.List;
  */
 @RestController  // REST控制器，返回JSON数据
 @RequestMapping("/api/categories")  // 分类API路径前缀
+@Slf4j
+@CrossOrigin
 @Tag(name = "分类管理", description = "题目分类相关操作，包括分类的增删改查、树形结构管理等功能")  // Swagger API分组
 public class CategoryController {
 
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 获取分类列表（包含题目数量）
@@ -27,7 +34,9 @@ public class CategoryController {
     @GetMapping  // 处理GET请求
     @Operation(summary = "获取分类列表", description = "获取所有题目分类列表，包含每个分类下的题目数量统计")  // API描述
     public Result<List<Category>> getCategories() {
-        return Result.success(null);
+        List<Category> categoriesList =categoryService.findCategoryList();
+        log.info("获取分类列表成功：{}", categoriesList);
+        return Result.success(categoriesList);
     }
 
     /**
@@ -37,7 +46,9 @@ public class CategoryController {
     @GetMapping("/tree")  // 处理GET请求
     @Operation(summary = "获取分类树形结构", description = "获取题目分类的树形层级结构，用于前端树形组件展示")  // API描述
     public Result<List<Category>> getCategoryTree() {
-        return Result.success(null);
+        List<Category> categoryTree = categoryService.findCategoryTreeList();
+        log.info("获取分类树成功：{},{}", categoryTree.size(),categoryTree);
+        return Result.success(categoryTree);
     }
 
     /**
