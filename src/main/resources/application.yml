@@ -30,6 +30,7 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    auto-mapping-behavior: full
   glogal-config:
       db-config:
         logic-delete-field: isDeleted
