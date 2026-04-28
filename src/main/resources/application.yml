@@ -1,6 +1,12 @@
 server:
   port: 8080
 spring:
+  data:
+    redis:
+      host: 192.168.150.101
+      port: 6379
+      database: 0
+      timeout: 3000
   servlet:
     multipart:
       # 单个文件最大大小（根据需要调整，这里设为 50MB）
@@ -40,3 +46,7 @@ minio:
   access-key: minioadmin
   secret-key: minioadmin
   bucket-name: exam-system
+
+#logging:
+#  level:
+#    root: debug

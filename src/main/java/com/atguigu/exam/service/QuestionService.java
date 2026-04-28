@@ -34,4 +34,16 @@ public interface QuestionService extends IService<Question> {
 
 
     void queryQuestionListByPage(Page<Question> questionPage, QuestionQueryVo questionQueryVo);
+
+    void queryQuestionListByStream(Page<Question> questionPage, QuestionQueryVo questionQueryVo);
+
+    Question queryQuestionById(Long id);
+
+    void saveQuestion(Question question);
+
+    void updateQuestion(Long id, Question question);
+
+    void romoveQuestion(Long id);
+
+    List<Question> getPopularQuestions(Integer size);
 } 

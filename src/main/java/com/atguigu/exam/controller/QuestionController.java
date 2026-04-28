@@ -88,7 +88,10 @@ public class QuestionController {
             @Parameter(description = "每页显示数量", example = "10") @RequestParam(defaultValue = "10") Integer size,
             QuestionQueryVo questionQueryVo) {
         Page<Question> questionPage = new Page<>(page, size);
-        questionService.queryQuestionListByPage(questionPage, questionQueryVo);
+        //分步查询
+//        questionService.queryQuestionListByPage(questionPage, questionQueryVo);
+        //java代码处理
+        questionService.queryQuestionListByStream(questionPage, questionQueryVo);
         log.info("分页查询第{}页题目列表成功，结果：{}", page,questionPage.getRecords());
         // 返回统一格式的成功响应
         return Result.success(questionPage);
@@ -109,8 +112,9 @@ public class QuestionController {
     @Operation(summary = "根据ID查询题目详情", description = "获取指定ID的题目完整信息，包括题目内容、选项、答案等详细数据")  // API描述
     public Result<Question> getQuestionById(
             @Parameter(description = "题目ID", example = "1") @PathVariable Long id) {
-
-        return Result.success(null);
+        Question question = questionService.queryQuestionById(id);
+        log.info("查询题目成功：{}", question);
+        return Result.success(question);
     }
     
     /**
@@ -131,8 +135,9 @@ public class QuestionController {
     @PostMapping  // 映射POST请求到/api/questions
     @Operation(summary = "创建新题目", description = "添加新的考试题目，支持选择题、判断题、简答题等多种题型")  // API描述
     public Result<Question> createQuestion(@RequestBody Question question) {
-
-        return Result.success(null);
+        questionService.saveQuestion(question);
+        log.info("创建题目成功：{}", question);
+        return Result.success(question);
     }
     
     /**
@@ -152,6 +157,8 @@ public class QuestionController {
     public Result<Question> updateQuestion(
             @Parameter(description = "题目ID") @PathVariable Long id, 
             @RequestBody Question question) {
+        questionService.updateQuestion(id, question);
+        log.info("更新题目成功：{}", question);
         return Result.success(null);
     }
     
@@ -173,12 +180,9 @@ public class QuestionController {
     @Operation(summary = "删除题目", description = "根据ID删除指定的题目，包括关联的选项和答案数据")  // API描述
     public Result<String> deleteQuestion(
             @Parameter(description = "题目ID") @PathVariable Long id) {
-        // 根据操作结果返回不同的响应
-        if (true) {
-            return Result.success("题目删除成功");
-        } else {
-            return Result.error("题目删除失败");
-        }
+        questionService.romoveQuestion(id);
+        log.info("删除题目{}成功", id);
+        return Result.success("题目删除成功");
     }
     
     /**
@@ -273,10 +277,11 @@ public class QuestionController {
     @GetMapping("/popular")  // 处理GET请求
     @Operation(summary = "获取热门题目", description = "获取访问次数最多的热门题目，用于首页推荐展示")  // API描述
     public Result<List<Question>> getPopularQuestions(
-            @Parameter(description = "返回题目数量", example = "10") @RequestParam(defaultValue = "10") Integer size) {
-
+            @Parameter(description = "返回题目数量", example = "6") @RequestParam(defaultValue = "6") Integer size) {
+        List<Question> popularQuestions = questionService.getPopularQuestions(size);
+        log.info("获取{}个热门题目成功：{}", size,popularQuestions);
         // 异常处理：记录日志并返回友好的错误信息
-        return Result.error("获取热门题目失败");
+        return Result.success(popularQuestions);
 
     }
 
