@@ -10,7 +10,9 @@ import com.atguigu.exam.mapper.QuestionAnswerMapper;
 import com.atguigu.exam.mapper.QuestionChoiceMapper;
 import com.atguigu.exam.mapper.QuestionMapper;
 import com.atguigu.exam.service.QuestionService;
+import com.atguigu.exam.utils.ExcelUtil;
 import com.atguigu.exam.utils.RedisUtils;
+import com.atguigu.exam.vo.QuestionImportVo;
 import com.atguigu.exam.vo.QuestionQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,10 +20,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -235,6 +240,60 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 
         fullQuestionChoiceAndAnswer(popularQuestions);
         return popularQuestions;
+    }
+
+    @Override
+    public List<QuestionImportVo> previeExcel(MultipartFile file) throws IOException {
+        if (file.isEmpty())
+            throw new RuntimeException("生成预览数据表格文件为空");
+        String filename = file.getOriginalFilename();
+        if(filename.endsWith(".xlsx") && filename.endsWith(".xls"))
+            throw new RuntimeException("上传文件格式出错，请上传xls或xlsx文件");
+        List<QuestionImportVo> questionImportVoList = ExcelUtil.parseExcel(file);
+        return questionImportVoList;
+    }
+
+    @Override
+    public String importQuestions(List<QuestionImportVo> questions) {
+        if (questions.isEmpty())
+            return "导入数据为空";
+        int successCount = 0;
+        int failCount = 0;
+        for(QuestionImportVo questionImportVo : questions){
+            try{
+                Question question = new Question();
+                BeanUtils.copyProperties(questionImportVo, question);
+                if(question.getType().equals("CHOICE")){
+                    List<QuestionChoice> questionchoices = new ArrayList<>(questionImportVo.getChoices().size());
+                    for(QuestionImportVo.ChoiceImportDto choice : questionImportVo.getChoices()){
+                        QuestionChoice questionChoice = new QuestionChoice();
+                        questionChoice.setContent(choice.getContent());
+                        questionChoice.setIsCorrect(choice.getIsCorrect());
+                        questionChoice.setSort(choice.getSort());
+                        questionchoices.add(questionChoice);
+                    }
+                    question.setChoices(questionchoices);
+                }
+
+                QuestionAnswer answer = new QuestionAnswer();
+                if (question.getType().equals("JUDGE"))
+                    answer.setAnswer(questionImportVo.getAnswer().toUpperCase());
+                else
+                    answer.setAnswer(questionImportVo.getAnswer());
+                answer.setKeywords(questionImportVo.getKeywords());
+                question.setAnswer(answer);
+
+                saveQuestion(question);
+                successCount++;
+            }catch(Exception e){
+                log.error("{}问题保存失败",questionImportVo.getTitle());
+                failCount++;
+            }
+        }
+
+        int totalCount = successCount + failCount;
+        String result = "一共" + totalCount + "道题，成功" + successCount + "道题，失败" + failCount + "道题";
+        return result;
     }
 
     public void incrementQuestionScore(Long questionId) {

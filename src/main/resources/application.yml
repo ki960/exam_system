@@ -3,7 +3,7 @@ server:
 spring:
   data:
     redis:
-      host: 192.168.150.101
+      host: 192.168.150.102
       port: 6379
       database: 0
       timeout: 3000
