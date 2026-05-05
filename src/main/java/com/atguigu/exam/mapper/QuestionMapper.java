@@ -24,4 +24,6 @@ public interface QuestionMapper extends BaseMapper<Question> {
     List<Map<String, Long>> selectCategoryQuestionCount();
 
     IPage<Question> selectQuestionListPage(IPage<Question> page,@Param("queryVo") QuestionQueryVo queryVo);
-} 
+
+    List<Question> customQueryQuestionListByPaperId(Integer id);
+}
