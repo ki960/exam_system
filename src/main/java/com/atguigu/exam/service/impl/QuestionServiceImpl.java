@@ -1,5 +1,7 @@
 package com.atguigu.exam.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.atguigu.exam.common.CacheConstants;
 import com.atguigu.exam.entity.PaperQuestion;
 import com.atguigu.exam.entity.Question;
@@ -9,9 +11,11 @@ import com.atguigu.exam.mapper.PaperQuestionMapper;
 import com.atguigu.exam.mapper.QuestionAnswerMapper;
 import com.atguigu.exam.mapper.QuestionChoiceMapper;
 import com.atguigu.exam.mapper.QuestionMapper;
+import com.atguigu.exam.service.DoubaoAiService;
 import com.atguigu.exam.service.QuestionService;
 import com.atguigu.exam.utils.ExcelUtil;
 import com.atguigu.exam.utils.RedisUtils;
+import com.atguigu.exam.vo.AiGenerateRequestVo;
 import com.atguigu.exam.vo.QuestionImportVo;
 import com.atguigu.exam.vo.QuestionQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -19,7 +23,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,6 +50,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     private RedisUtils redisUtils;
     @Autowired
     private PaperQuestionMapper paperQuestionMapper;
+    @Autowired
+    private DoubaoAiService doubaoAiService;
 
     @Override
     public void queryQuestionListByPage(Page<Question> questionPage, QuestionQueryVo questionQueryVo) {
@@ -294,6 +298,56 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         int totalCount = successCount + failCount;
         String result = "一共" + totalCount + "道题，成功" + successCount + "道题，失败" + failCount + "道题";
         return result;
+    }
+
+    @Override
+    public List<QuestionImportVo> aiGenerateQuestions(AiGenerateRequestVo request) throws InterruptedException {
+        String prompt = doubaoAiService.buildPrompt(request);
+        log.info("生成题目的提示为：{}", prompt);
+
+        String response = doubaoAiService.callDoubaoAi(prompt);
+        log.info("生成题目的结果为：{}", response);
+
+        int startIndex = response.indexOf("```json");
+        int endIndex = response.lastIndexOf("```");
+
+        if(startIndex != 1 && endIndex != -1 && startIndex < endIndex){
+            String resultJson = response.substring(startIndex + 7, endIndex);
+
+            JSONObject jsonObject = JSONObject.parseObject(resultJson);
+            JSONArray questions = jsonObject.getJSONArray("questions");
+            List<QuestionImportVo> questionImportVoList = new ArrayList<>();
+
+            for(int i = 0; i < questions.size(); i++){
+                JSONObject question = questions.getJSONObject(i);
+                QuestionImportVo questionImportVo = new QuestionImportVo();
+                questionImportVo.setTitle(question.getString("title"));
+                questionImportVo.setType(question.getString("type"));
+                questionImportVo.setMulti(question.getBoolean("multi"));
+                questionImportVo.setCategoryId(request.getCategoryId());
+                questionImportVo.setDifficulty(question.getString("difficulty"));
+                questionImportVo.setScore(question.getInteger("score"));
+                questionImportVo.setAnalysis(question.getString("analysis"));
+                questionImportVo.setAnswer(question.getString("answer"));
+
+                if (question.getString("type").equals("CHOICE")){
+                    JSONArray choices = question.getJSONArray("choices");
+                    List<QuestionImportVo.ChoiceImportDto> choiceImportDtoList = new ArrayList<>();
+                    for(int j = 0; j < choices.size(); j++){
+                        QuestionImportVo.ChoiceImportDto choiceImportDto = new QuestionImportVo.ChoiceImportDto();
+                        choiceImportDto.setContent(choices.getJSONObject(j).getString("content"));
+                        choiceImportDto.setIsCorrect(choices.getJSONObject(j).getBoolean("isCorrect"));
+                        choiceImportDto.setSort(choices.getJSONObject(j).getInteger("sort"));
+                        choiceImportDtoList.add(choiceImportDto);
+                    }
+                    questionImportVo.setChoices(choiceImportDtoList);
+                }
+                questionImportVoList.add(questionImportVo);
+            }
+            return questionImportVoList;
+        }
+
+        throw new RuntimeException("ai生成题目结果结构错误，无法进行解析，具体数据为：{}".formatted(response));
     }
 
     public void incrementQuestionScore(Long questionId) {

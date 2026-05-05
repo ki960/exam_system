@@ -1,6 +1,7 @@
 package com.atguigu.exam.service;
 
 import com.atguigu.exam.entity.Question;
+import com.atguigu.exam.vo.AiGenerateRequestVo;
 import com.atguigu.exam.vo.QuestionImportVo;
 import com.atguigu.exam.vo.QuestionQueryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -53,4 +54,6 @@ public interface QuestionService extends IService<Question> {
     List<QuestionImportVo> previeExcel(MultipartFile file) throws IOException;
 
     String importQuestions(List<QuestionImportVo> questions);
+
+    List<QuestionImportVo> aiGenerateQuestions(AiGenerateRequestVo request) throws InterruptedException;
 } 
