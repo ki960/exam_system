@@ -1,6 +1,8 @@
 package com.atguigu.exam.service;
 
 import com.atguigu.exam.entity.ExamRecord;
+import com.atguigu.exam.vo.ExamRankingVO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
@@ -12,4 +14,9 @@ import java.util.List;
  */
 public interface ExamRecordService extends IService<ExamRecord> {
 
+    void pageExamRecords(Page<ExamRecord> examRecordPage, String studentName, String studentNumber, Integer status, String startDate, String endDate);
+
+    void removeExamRecordById(Integer id);
+
+    List<ExamRankingVO> customGetRanking(Integer paperId, Integer limit);
 } 
