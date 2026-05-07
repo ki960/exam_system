@@ -56,3 +56,8 @@ doubao:
   model: doubao-seed-2-0-lite-260215
   max-tokens: 2000
   temperature: 0.3
+
+Jwt:
+    secretKey: your-secret-key-at-least-256-bits-long-for-hs256-algorithm
+    ttlMillis: 72000000000000
+    token-name: token

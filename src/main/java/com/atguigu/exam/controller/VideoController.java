@@ -23,6 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/videos")
 @Tag(name = "视频管理(用户端)", description = "用户端视频相关操作，包括视频浏览、观看、点赞、投稿等功能")
+@CrossOrigin(origins = "*")
 public class VideoController {
 
     @Autowired
