@@ -36,3 +36,11 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# 前端依赖和构建产物
+exam-system-web-backup/node_modules/
+exam-system-web-backup/dist/
+exam-system-web-backup/.vscode/
+exam-system-web-backup/.idea/
+exam-system-web-backup/.env
+exam-system-web-backup/.env.local
