@@ -113,7 +113,7 @@ const noticeRules = {
 const getNoticeList = async () => {
   loading.value = true
   try {
-    const res = await request.get('/api/notices/list')
+    const res = await request.get('/api/admin/notices/list')
     noticeList.value = res.data || []
   } catch (error) {
     ElMessage.error('获取公告列表失败')
@@ -137,7 +137,7 @@ const submitNotice = async () => {
     await noticeFormRef.value.validate()
     submitLoading.value = true
     const isEdit = noticeForm.id !== null
-    const url = isEdit ? '/api/notices/update' : '/api/notices/add'
+    const url = isEdit ? '/api/admin/notices/update' : '/api/admin/notices/add'
     const method = isEdit ? 'put' : 'post'
     await request[method](url, noticeForm)
     ElMessage.success(isEdit ? '公告更新成功' : '公告添加成功')
@@ -155,7 +155,7 @@ const toggleStatus = async (notice) => {
     const newStatus = !notice.isActive
     const statusText = newStatus ? '启用' : '禁用'
     await ElMessageBox.confirm(`确认${statusText}公告"${notice.title}"？`, '确认操作', { confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning' })
-    await request.put(`/api/notices/toggle/${notice.id}?isActive=${newStatus}`)
+    await request.put(`/api/admin/notices/toggle/${notice.id}?isActive=${newStatus}`)
     ElMessage.success(`公告${statusText}成功`)
     await getNoticeList()
   } catch (error) {
@@ -166,7 +166,7 @@ const toggleStatus = async (notice) => {
 const deleteNotice = async (notice) => {
   try {
     await ElMessageBox.confirm(`确认删除公告"${notice.title}"？此操作不可恢复！`, '确认删除', { confirmButtonText: '确认删除', cancelButtonText: '取消', type: 'danger' })
-    await request.delete(`/api/notices/delete/${notice.id}`)
+    await request.delete(`/api/admin/notices/delete/${notice.id}`)
     ElMessage.success('公告删除成功')
     await getNoticeList()
   } catch (error) {

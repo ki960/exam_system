@@ -6,7 +6,7 @@ const request = axios.create({
   baseURL: 'http://localhost:8080', 
   timeout: 100000, // 请求超时时间
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json;charset=UTF-8'
   }
 })
 

@@ -1,102 +1,158 @@
 import request from '../utils/request'
 
 /**
- * è§†é¢‘åˆ†ç±»ç›¸å…³çš„API
+ * ÊÓÆµ·ÖÀàÏà¹ØµÄAPI
  */
 
+// ========== ÓÃ»§¶ËÊÓÆµ·ÖÀàAPI ==========
+
 /**
- * è·å–åˆ†ç±»åˆ—è¡¨ï¼ˆåŒ…å«è§†é¢‘æ•°é‡ï¼‰
+ * »ñÈ¡·ÖÀàÁĞ±í£¨°üº¬ÊÓÆµÊıÁ¿£©
  */
 export function getVideoCategories() {
   return request({
-    url: '/api/video-categories',
+    url: '/api/user/video-categories',
     method: 'get'
   })
 }
 
 /**
- * è·å–åˆ†ç±»æ ‘å½¢ç»“æ„
+ * »ñÈ¡·ÖÀàÊ÷ĞÎ½á¹¹
  */
 export function getVideoCategoryTree() {
   return request({
-    url: '/api/video-categories/tree',
+    url: '/api/user/video-categories/tree',
     method: 'get'
   })
 }
 
 /**
- * è·å–é¡¶çº§åˆ†ç±»åˆ—è¡¨
+ * »ñÈ¡¶¥¼¶·ÖÀàÁĞ±í
  */
 export function getTopVideoCategories() {
   return request({
-    url: '/api/video-categories/top',
+    url: '/api/user/video-categories/top',
     method: 'get'
   })
 }
 
 /**
- * æ ¹æ®çˆ¶çº§åˆ†ç±»IDè·å–å­åˆ†ç±»
- * @param {number} parentId - çˆ¶çº§åˆ†ç±»ID
+ * ¸ù¾İ¸¸¼¶·ÖÀàID»ñÈ¡×Ó·ÖÀà
+ * @param {number} parentId - ¸¸¼¶·ÖÀàID
  */
 export function getChildVideoCategories(parentId) {
   return request({
-    url: `/api/video-categories/children/${parentId}`,
+    url: `/api/user/video-categories/children/${parentId}`,
     method: 'get'
   })
 }
 
 /**
- * æ ¹æ®IDè·å–åˆ†ç±»è¯¦æƒ…
- * @param {number} id - åˆ†ç±»ID
+ * ¸ù¾İID»ñÈ¡·ÖÀàÏêÇé
+ * @param {number} id - ·ÖÀàID
  */
 export function getVideoCategoryById(id) {
   return request({
-    url: `/api/video-categories/${id}`,
+    url: `/api/user/video-categories/${id}`,
+    method: 'get'
+  })
+}
+
+// ========== ¹ÜÀí¶ËÊÓÆµ·ÖÀàAPI ==========
+
+/**
+ * »ñÈ¡·ÖÀàÁĞ±í£¨¹ÜÀí¶Ë£©
+ */
+export function getVideoCategoriesForAdmin() {
+  return request({
+    url: '/api/admin/video-categories',
     method: 'get'
   })
 }
 
 /**
- * æ·»åŠ åˆ†ç±»
- * @param {Object} category - åˆ†ç±»ä¿¡æ¯
+ * »ñÈ¡·ÖÀàÊ÷ĞÎ½á¹¹£¨¹ÜÀí¶Ë£©
+ */
+export function getVideoCategoryTreeForAdmin() {
+  return request({
+    url: '/api/admin/video-categories/tree',
+    method: 'get'
+  })
+}
+
+/**
+ * »ñÈ¡¶¥¼¶·ÖÀàÁĞ±í£¨¹ÜÀí¶Ë£©
+ */
+export function getTopVideoCategoriesForAdmin() {
+  return request({
+    url: '/api/admin/video-categories/top',
+    method: 'get'
+  })
+}
+
+/**
+ * ¸ù¾İ¸¸¼¶·ÖÀàID»ñÈ¡×Ó·ÖÀà£¨¹ÜÀí¶Ë£©
+ * @param {number} parentId - ¸¸¼¶·ÖÀàID
+ */
+export function getChildVideoCategoriesForAdmin(parentId) {
+  return request({
+    url: `/api/admin/video-categories/children/${parentId}`,
+    method: 'get'
+  })
+}
+
+/**
+ * ¸ù¾İID»ñÈ¡·ÖÀàÏêÇé£¨¹ÜÀí¶Ë£©
+ * @param {number} id - ·ÖÀàID
+ */
+export function getVideoCategoryByIdForAdmin(id) {
+  return request({
+    url: `/api/admin/video-categories/${id}`,
+    method: 'get'
+  })
+}
+
+/**
+ * Ìí¼Ó·ÖÀà£¨¹ÜÀí¶Ë£©
+ * @param {Object} category - ·ÖÀàĞÅÏ¢
  */
 export function addVideoCategory(category) {
   return request({
-    url: '/api/video-categories',
+    url: '/api/admin/video-categories',
     method: 'post',
     data: category
   })
 }
 
 /**
- * æ›´æ–°åˆ†ç±»
- * @param {Object} category - åˆ†ç±»ä¿¡æ¯
+ * ¸üĞÂ·ÖÀà£¨¹ÜÀí¶Ë£©
+ * @param {Object} category - ·ÖÀàĞÅÏ¢
  */
 export function updateVideoCategory(category) {
   return request({
-    url: '/api/video-categories',
+    url: '/api/admin/video-categories',
     method: 'put',
     data: category
   })
 }
 
 /**
- * åˆ é™¤åˆ†ç±»
- * @param {number} id - åˆ†ç±»ID
+ * É¾³ı·ÖÀà£¨¹ÜÀí¶Ë£©
+ * @param {number} id - ·ÖÀàID
  */
 export function deleteVideoCategory(id) {
   return request({
-    url: `/api/video-categories/${id}`,
+    url: `/api/admin/video-categories/${id}`,
     method: 'delete'
   })
 }
 
 /**
- * è·å–åˆ†ç±»æ ‘å½¢ç»“æ„ï¼ˆåˆ«åï¼‰
+ * »ñÈ¡·ÖÀàÊ÷ĞÎ½á¹¹£¨±ğÃû£©
  */
 export function getCategoryTree() {
   return request({
-    url: '/api/video-categories/tree',
+    url: '/api/user/video-categories/tree',
     method: 'get'
   })
-} 
+}

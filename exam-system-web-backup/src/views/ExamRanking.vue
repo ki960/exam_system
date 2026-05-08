@@ -3,24 +3,24 @@
     <!-- 页面标题 - 重新设计 -->
     <div class="page-header">
       <div class="header-decoration">
-        <div class="trophy-animation">🏆</div>
+        <div class="trophy-animation">?</div>
         <div class="stars">
-          <span class="star">⭐</span>
-          <span class="star">⭐</span>
-          <span class="star">⭐</span>
+          <span class="star">?</span>
+          <span class="star">?</span>
+          <span class="star">?</span>
         </div>
       </div>
-      <h2 class="main-title">🏆 考试排行榜 🏆</h2>
-      <p class="subtitle">🎯 挑战极限，追求卓越！看看谁是学霸之王？</p>
+      <h2 class="main-title">? 考试排行榜 ?</h2>
+      <p class="subtitle">? 挑战极限，追求卓越！看看谁是学霸之王？</p>
       <div class="title-underline"></div>
     </div>
 
     <!-- 筛选条件 - 美化 -->
     <div class="filter-bar">
-      <div class="filter-label">🔍 筛选条件：</div>
+      <div class="filter-label">? 筛选条件：</div>
       <el-select 
         v-model="selectedPaperId" 
-        placeholder="📚 选择试卷" 
+        placeholder="? 选择试卷" 
         clearable 
         style="width: 300px"
         @change="loadRanking"
@@ -35,7 +35,7 @@
       </el-select>
       <el-select 
         v-model="rankingLimit" 
-        placeholder="📊 显示数量" 
+        placeholder="? 显示数量" 
         style="width: 150px"
         @change="loadRanking"
         class="custom-select"
@@ -52,7 +52,7 @@
         icon="Refresh"
         class="refresh-btn"
       >
-        🔄 刷新排行榜
+        ? 刷新排行榜
       </el-button>
     </div>
 
@@ -62,11 +62,11 @@
       <div class="ranking-container">
         <!-- 冠军展示区 -->
         <div v-if="rankingList.length > 0" class="champion-showcase">
-          <div class="champion-crown">👑</div>
+          <div class="champion-crown">?</div>
           <div class="champion-info">
             <div class="champion-name">{{ rankingList[0].studentName }}</div>
             <div class="champion-score">{{ rankingList[0].score }}分</div>
-            <div class="champion-title">🎉 当前考试之王！🎉</div>
+            <div class="champion-title">? 当前考试之王！?</div>
           </div>
         </div>
 
@@ -82,15 +82,15 @@
             :class="{ 'top-three': index < 3 }"
           >
             <div class="rank-number" :class="getRankClass(index + 1)">
-              <span v-if="index === 0">🥇</span>
-              <span v-else-if="index === 1">🥈</span>
-              <span v-else-if="index === 2">🥉</span>
+              <span v-if="index === 0">?</span>
+              <span v-else-if="index === 1">?</span>
+              <span v-else-if="index === 2">?</span>
               <span v-else>{{ index + 1 }}</span>
             </div>
             <div class="student-info">
               <div class="student-name">{{ record.studentName }}</div>
-              <div class="paper-name">📝 {{ record.paper?.name }}</div>
-              <div class="exam-time">📅 {{ formatDateTime(record.endTime) }}</div>
+              <div class="paper-name">? {{ record.paper?.name }}</div>
+              <div class="exam-time">? {{ formatDateTime(record.endTime) }}</div>
             </div>
             <div class="score-info">
               <div class="score">{{ record.score }}</div>
@@ -103,7 +103,7 @@
         </div>
         
         <div v-else class="empty-state">
-          <div class="empty-icon">📭</div>
+          <div class="empty-icon">?</div>
           <div class="empty-text">暂无排行榜数据</div>
           <div class="empty-hint">快去参加考试，成为第一个上榜的人吧！</div>
         </div>
@@ -114,28 +114,28 @@
         <div class="stats-title">{{ statsTitle }}</div>
         <div class="stats-vertical">
           <div class="stat-card-vertical">
-            <div class="stat-icon">👥</div>
+            <div class="stat-icon">?</div>
             <div class="stat-info">
               <div class="stat-value">{{ totalParticipants }}</div>
               <div class="stat-label">参与人数</div>
             </div>
           </div>
           <div class="stat-card-vertical">
-            <div class="stat-icon">📊</div>
+            <div class="stat-icon">?</div>
             <div class="stat-info">
               <div class="stat-value">{{ averageScore }}</div>
               <div class="stat-label">平均分</div>
             </div>
           </div>
           <div class="stat-card-vertical">
-            <div class="stat-icon">🎯</div>
+            <div class="stat-icon">?</div>
             <div class="stat-info">
               <div class="stat-value">{{ maxScore }}</div>
               <div class="stat-label">最高分</div>
             </div>
           </div>
           <div class="stat-card-vertical">
-            <div class="stat-icon">📉</div>
+            <div class="stat-icon">?</div>
             <div class="stat-info">
               <div class="stat-value">{{ minScore }}</div>
               <div class="stat-label">最低分</div>
@@ -147,12 +147,12 @@
 
     <!-- 底部激励区域 -->
     <div class="motivation-section">
-      <div class="motivation-text">💪 每一次挑战都是成长的机会！加油冲刺更高的排名吧！</div>
+      <div class="motivation-text">? 每一次挑战都是成长的机会！加油冲刺更高的排名吧！</div>
       <div class="floating-emojis">
-        <span class="emoji">🌟</span>
-        <span class="emoji">🚀</span>
-        <span class="emoji">💎</span>
-        <span class="emoji">🔥</span>
+        <span class="emoji">?</span>
+        <span class="emoji">?</span>
+        <span class="emoji">?</span>
+        <span class="emoji">?</span>
       </div>
     </div>
   </div>
@@ -197,16 +197,16 @@ const totalParticipants = computed(() => {
 const statsTitle = computed(() => {
   if (selectedPaperId.value) {
     const selectedPaper = paperList.value.find(p => p.id === selectedPaperId.value)
-    return `📊 ${selectedPaper?.name || '选中试卷'} 统计`
+    return `? ${selectedPaper?.name || '选中试卷'} 统计`
   }
-  return '📊 全部试卷统计'
+  return '? 全部试卷统计'
 })
 
 // 获取试卷列表
 const getPaperList = async () => {
   try {
     // 调用后端试卷列表API，只传递状态筛选参数
-    const res = await request.get('/api/papers/list', {
+    const res = await request.get('/api/user/papers/list', {
       params: {
         status: 'PUBLISHED'  // 只获取已发布的试卷
       }
@@ -237,8 +237,8 @@ const loadRanking = async () => {
     
     // 并行调用两个API：一个用于显示，一个用于统计
     const [rankingRes, statsRes] = await Promise.all([
-      request.get('/api/exam-records/ranking', { params: displayParams }),
-      request.get('/api/exam-records/ranking', { params: statsParams })
+      request.get('/api/user/exam-records/ranking', { params: displayParams }),
+      request.get('/api/user/exam-records/ranking', { params: statsParams })
     ])
     
     // 设置排行榜数据和统计数据

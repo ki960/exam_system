@@ -57,7 +57,7 @@
             <el-button v-if="row.status === 'DRAFT' || row.status === '待发布'" size="small" type="success" @click="updateStatus(row, 'PUBLISHED')" :icon="CaretRight">发布</el-button>
             <el-button v-if="row.status === 'PUBLISHED'" size="small" type="warning" @click="updateStatus(row, 'DRAFT')" :icon="VideoPause">停止</el-button>
             <el-button size="small" type="primary" @click="editPaper(row)" :icon="Edit">编辑</el-button>
-            <el-button size="small" type="danger" @click="deletePaper(row)" :icon="Delete">删除</el-button>
+            <el-button size="small" type="danger" @click="handleDeletePaper(row)" :icon="Delete">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -70,7 +70,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, CaretRight, Edit, Delete, VideoPause, Search } from '@element-plus/icons-vue'
-import { getPapers } from '../api/paper.js'
+import { getPapersForAdmin, updatePaperStatus, deletePaper } from '../api/paper.js'
 import request from '../utils/request'
 
 const router = useRouter()
@@ -84,7 +84,7 @@ const getStatusText = (status) => ({ 'PUBLISHED': '已发布', 'DRAFT': '草稿'
 const getPaperList = async () => {
   loading.value = true
   try {
-    const res = await getPapers({ name: searchKeyword.value })
+    const res = await getPapersForAdmin({ name: searchKeyword.value })
     paperList.value = res.data
   } catch (error) {
     ElMessage.error('获取试卷列表失败')
@@ -99,7 +99,7 @@ const editPaper = (paper) => router.push(`/admin/paper-create?id=${paper.id}`)
 
 const updateStatus = async (paper, status) => {
   try {
-    await request.post(`/api/papers/${paper.id}/status?status=${status}`)
+    await updatePaperStatus(paper.id, status)
     ElMessage.success(`试卷状态已更新为${getStatusText(status)}`)
     getPaperList()
   } catch (error) {
@@ -107,10 +107,10 @@ const updateStatus = async (paper, status) => {
   }
 }
 
-const deletePaper = async (paper) => {
+const handleDeletePaper = async (paper) => {
   try {
     await ElMessageBox.confirm(`确定要删除试卷"${paper.name}"吗？`, '确认删除', { confirmButtonText: '确认删除', cancelButtonText: '取消', type: 'danger' })
-    await request.delete(`/api/papers/${paper.id}`)
+    await deletePaper(paper.id)
     ElMessage.success('试卷删除成功')
     await getPaperList()
   } catch (error) {
@@ -122,7 +122,7 @@ const handleBatchDelete = async () => {
   if (selectedPapers.value.length === 0) return ElMessage.warning('请先选择要删除的试卷')
   try {
     await ElMessageBox.confirm(`确定要删除选中的 ${selectedPapers.value.length} 份试卷吗？`, '确认批量删除', { confirmButtonText: '确认删除', cancelButtonText: '取消', type: 'danger' })
-    const deletePromises = selectedPapers.value.map(p => request.delete(`/api/papers/${p.id}`))
+    const deletePromises = selectedPapers.value.map(p => request.delete(`/api/admin/paperspapers/${p.id}`))
     await Promise.all(deletePromises)
     ElMessage.success(`成功删除 ${selectedPapers.value.length} 份试卷`)
     selectedPapers.value = []

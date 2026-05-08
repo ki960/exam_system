@@ -134,7 +134,7 @@
         <div class="suggestions-content">
           <div class="suggestion-item" v-for="(suggestion, index) in interviewResult.learningSuggestions" :key="index">
             <div class="suggestion-icon">
-              <el-icon><Lightbulb /></el-icon>
+              <el-icon><InfoFilled /></el-icon>
             </div>
             <div class="suggestion-content">
               <h5>{{ suggestion.title }}</h5>
@@ -207,14 +207,14 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Lightbulb } from '@element-plus/icons-vue'
+import { InfoFilled } from '@element-plus/icons-vue'
 import { getMockInterviewDetail } from '@/api/interviewQuestion'
 import * as echarts from 'echarts'
 
 export default {
   name: 'InterviewResult',
   components: {
-    Lightbulb
+    InfoFilled
   },
   setup() {
     const route = useRoute()

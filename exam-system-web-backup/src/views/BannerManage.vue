@@ -65,9 +65,9 @@
           <el-input v-model="bannerForm.linkUrl" placeholder="请输入跳转链接（可选）" />
           <div class="link-tips">
             <p><strong>支持的链接格式：</strong></p>
-            <p>• 外部网站：https://www.baidu.com</p>
-            <p>• 内部页面：/practice 或 /exam/list</p>
-            <p>• 留空则点击无跳转效果</p>
+            <p>? 外部网站：https://www.baidu.com</p>
+            <p>? 内部页面：/practice 或 /exam/list</p>
+            <p>? 留空则点击无跳转效果</p>
           </div>
         </el-form-item>
         <el-form-item label="排序">
@@ -101,7 +101,7 @@ const imageInputType = ref('upload')
 const uploadRef = ref()
 const uploadLoading = ref(false)
 
-const uploadAction = ref('http://localhost:8080/api/banners/upload-image')
+const uploadAction = ref('http://localhost:8080/api/admin/banners/upload-image')
 const uploadHeaders = ref({})
 
 const bannerForm = reactive({ id: null, title: '', description: '', imageUrl: '', linkUrl: '', sortOrder: 0, isActive: true })
@@ -114,7 +114,7 @@ const bannerRules = {
 const getBannerList = async () => {
   loading.value = true
   try {
-    const res = await request.get('/api/banners/list')
+    const res = await request.get('/api/admin/banners/list')
     bannerList.value = res.data || []
   } catch (error) {
     ElMessage.error('获取轮播图列表失败')
@@ -138,7 +138,7 @@ const submitBanner = async () => {
     await bannerFormRef.value.validate()
     submitLoading.value = true
     const isEdit = bannerForm.id !== null
-    const url = isEdit ? '/api/banners/update' : '/api/banners/add'
+    const url = isEdit ? '/api/admin/banners/update' : '/api/admin/banners/add'
     const method = isEdit ? 'put' : 'post'
     await request[method](url, bannerForm)
     ElMessage.success(isEdit ? '轮播图更新成功' : '轮播图添加成功')
@@ -154,7 +154,7 @@ const submitBanner = async () => {
 const toggleBannerStatus = async (banner) => {
   try {
     const newStatus = !banner.isActive
-    await request.put(`/api/banners/toggle/${banner.id}?isActive=${newStatus}`)
+    await request.put(`/api/admin/banners/toggle/${banner.id}?isActive=${newStatus}`)
     banner.isActive = newStatus
     ElMessage.success(`轮播图已${newStatus ? '启用' : '禁用'}`)
   } catch (error) {
@@ -165,7 +165,7 @@ const toggleBannerStatus = async (banner) => {
 const deleteBanner = async (banner) => {
   try {
     await ElMessageBox.confirm(`确定要删除轮播图"${banner.title}"吗？`, '确认删除', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
-    await request.delete(`/api/banners/delete/${banner.id}`)
+    await request.delete(`/api/admin/banners/delete/${banner.id}`)
     ElMessage.success('删除成功')
     await getBannerList()
   } catch (error) {

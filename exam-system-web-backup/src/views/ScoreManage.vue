@@ -92,7 +92,7 @@ const getExamRecords = async () => {
       studentNumber: searchForm.studentNumber, status: searchForm.status, 
       startDate: searchForm.dateRange?.[0], endDate: searchForm.dateRange?.[1] 
     }
-    const res = await request.get('/api/exam-records/list', { params })
+    const res = await request.get('/api/admin/exam-records/list', { params })
     examRecords.value = res.data.records
     pagination.total = res.data.total
   } catch (error) {

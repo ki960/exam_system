@@ -1,40 +1,87 @@
 import request from '../utils/request'
 
 /**
- * è¯•å·ç›¸å…³çš„API
+ * ÊÔ¾íÏà¹ØµÄAPI
  */
 
-// æ‰‹åŠ¨åˆ›å»ºè¯•å·
-export function createPaper(data) {
-  return request({
-    url: '/api/papers',
-    method: 'post',
-    data
-  })
-}
+// ========== ÓÃ»§¶ËÊÔ¾íAPI ==========
 
-// AIæ™ºèƒ½ç»„å·
-export function createPaperWithAI(data) {
-  return request({
-    url: '/api/papers/ai',
-    method: 'post',
-    data
-  })
-}
-
-// è·å–è¯•å·è¯¦æƒ…
+// »ñÈ¡ÊÔ¾íÏêÇé£¨ÓÃ»§¶Ë£©
 export function getPaperById(id) {
   return request({
-    url: `/api/papers/${id}`,
+    url: `/api/user/papers/${id}`,
     method: 'get'
   })
 }
 
-// è·å–æ‰€æœ‰è¯•å·åˆ—è¡¨
+// »ñÈ¡ËùÓĞÊÔ¾íÁĞ±í£¨ÓÃ»§¶Ë£©
 export function getPapers(params) {
   return request({
-    url: '/api/papers/list',
+    url: '/api/user/papers/list',
     method: 'get',
     params
+  })
+}
+
+// ========== ¹ÜÀí¶ËÊÔ¾íAPI ==========
+
+// ´´½¨ÊÔ¾í£¨¹ÜÀí¶Ë£©
+export function createPaper(data) {
+  return request({
+    url: '/api/admin/paperspapers',
+    method: 'post',
+    data
+  })
+}
+
+// AIÖÇÄÜ×é¾í£¨¹ÜÀí¶Ë£©
+export function createPaperWithAI(data) {
+  return request({
+    url: '/api/admin/paperspapers/ai',
+    method: 'post',
+    data
+  })
+}
+
+// »ñÈ¡ÊÔ¾íÏêÇé£¨¹ÜÀí¶Ë£©
+export function getPaperByIdForAdmin(id) {
+  return request({
+    url: `/api/admin/paperspapers/${id}`,
+    method: 'get'
+  })
+}
+
+// »ñÈ¡ËùÓĞÊÔ¾íÁĞ±í£¨¹ÜÀí¶Ë£©
+export function getPapersForAdmin(params) {
+  return request({
+    url: '/api/admin/paperspapers/list',
+    method: 'get',
+    params
+  })
+}
+
+// ¸üĞÂÊÔ¾í£¨¹ÜÀí¶Ë£©
+export function updatePaper(id, data) {
+  return request({
+    url: `/api/admin/paperspapers/${id}`,
+    method: 'put',
+    data
+  })
+}
+
+// ¸üĞÂÊÔ¾í×´Ì¬£¨¹ÜÀí¶Ë£©
+export function updatePaperStatus(id, status) {
+  return request({
+    url: `/api/admin/paperspapers/${id}/status`,
+    method: 'post',
+    params: { status }
+  })
+}
+
+// É¾³ıÊÔ¾í£¨¹ÜÀí¶Ë£©
+export function deletePaper(id) {
+  return request({
+    url: `/api/admin/paperspapers/${id}`,
+    method: 'delete'
   })
 }

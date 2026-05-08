@@ -899,7 +899,7 @@ const questionForm = reactive(initQuestionForm())
 const fetchQuestions = async () => {
   loading.value = true
   try {
-    const res = await request.get('/api/questions/list', {
+    const res = await request.get('/api/admin/questions/list', {
       params: {
         ...searchForm,
         page: pagination.current,
@@ -920,7 +920,7 @@ const fetchQuestions = async () => {
 // 获取分类列表
 const fetchCategories = async () => {
   try {
-    const res = await request.get('/api/categories/tree')
+    const res = await request.get('/api/admin/categories/tree')
     categoryTree.value = res.data
     categories.value = res.data
   } catch (error) {
@@ -949,7 +949,7 @@ const resetBatchImport = () => {
 // 下载Excel模板
 const downloadTemplate = async () => {
   try {
-    const response = await fetch('/api/questions/batch/template')
+    const response = await fetch('/api/questions/admin/batch/template')
     const blob = await response.blob()
     const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -999,7 +999,7 @@ const previewExcelData = async () => {
     const formData = new FormData()
     formData.append('file', selectedFile.value.raw)
 
-    const res = await request.post('/api/questions/batch/preview-excel', formData, {
+    const res = await request.post('/api/admin/questions/batch/preview-excel', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -1019,7 +1019,7 @@ const previewExcelData = async () => {
 const confirmImport = async () => {
   importLoading.value = true
   try {
-    const res = await request.post('/api/questions/batch/import-questions', previewData.value)
+    const res = await request.post('/api/admin/questions/batch/import-questions', previewData.value)
     
     importResult.success = true
     importResult.title = '导入成功！'
@@ -1155,7 +1155,7 @@ const startAiGenerate = async () => {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 180000) // 3分钟超时
 
-    const res = await request.post('/api/questions/batch/ai-generate', requestData, {
+    const res = await request.post('/api/admin/questions/batch/ai-generate', requestData, {
       signal: controller.signal,
       timeout: 180000 // 3分钟超时
     })
@@ -1230,7 +1230,7 @@ const saveAiQuestionEdit = () => {
 const confirmAiImport = async () => {
   aiImportLoading.value = true
   try {
-    const res = await request.post('/api/questions/batch/import-questions', aiGeneratedData.value)
+    const res = await request.post('/api/admin/questions/batch/import-questions', aiGeneratedData.value)
     
     aiImportResult.success = true
     aiImportResult.title = 'AI题目导入成功！'
@@ -1345,10 +1345,10 @@ const handleSubmit = async () => {
   submitting.value = true
   try {
     if (isEdit.value) {
-      await request.put(`/api/questions/${questionForm.id}`, questionForm)
+      await request.put(`/api/admin/questions/${questionForm.id}`, questionForm)
       ElMessage.success('题目更新成功')
     } else {
-      await request.post('/api/questions', questionForm)
+      await request.post('/api/admin/questions', questionForm)
       ElMessage.success('题目添加成功')
     }
     
@@ -1371,7 +1371,7 @@ const handleDelete = async (row) => {
       type: 'warning'
     })
     
-    await request.delete(`/api/questions/${row.id}`)
+    await request.delete(`/api/admin/questions/${row.id}`)
     ElMessage.success('删除成功')
     await fetchQuestions()
     await fetchCategories() // 重新获取分类数据以更新数量
@@ -1465,7 +1465,7 @@ const handleBatchDelete = async () => {
     
     // 批量删除API调用
     const deletePromises = selectedQuestions.value.map(id => 
-      request.delete(`/api/questions/${id}`)
+      request.delete(`/api/admin/questions/${id}`)
     )
     
     await Promise.all(deletePromises)

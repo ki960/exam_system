@@ -182,12 +182,6 @@ const routes = [
   // 已彻底删除 path:'/user-contributions' 路由配置
   // 邀请码相关路由
   {
-    path: '/interview-codes',
-    name: 'InterviewCodes',
-    component: () => import('../views/InterviewCodes.vue'),
-    meta: { title: '邀请码管理' }
-  },
-  {
     path: '/interview-codes/activate',
     name: 'ActivateCode',
     component: () => import('../views/ActivateCode.vue'),
@@ -219,16 +213,16 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title + ' - 智能学习平台'
   }
-  
+
   // 防止从考试结果页面返回到考试页面的逻辑
   if (from.path && from.path.includes('/exam-result/') && to.path && to.path.includes('/exam/')) {
     // 如果用户试图从结果页面返回到考试页面
     console.log('检测到从结果页面返回到考试页面的尝试')
-    
+
     // 检查目标考试ID和来源结果页面ID是否相同
     const fromExamId = from.params.id
     const toExamId = to.params.id
-    
+
     if (fromExamId === toExamId) {
       // 如果是同一个考试，阻止返回并重定向到考试列表
       console.log('阻止返回到已完成的考试，重定向到考试列表')
@@ -236,10 +230,10 @@ router.beforeEach((to, from, next) => {
       return
     }
   }
-  
+
   // 如果是访问考试页面，我们不能在这里检查考试状态（因为需要API调用）
   // 这个检查已经在Exam.vue的getExamData函数中处理了
-  
+
   next()
 })
 

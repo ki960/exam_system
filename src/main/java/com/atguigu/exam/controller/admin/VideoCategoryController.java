@@ -18,6 +18,7 @@ import java.util.List;
  */
 @RestController("adminVideoCategoryController")
 @RequestMapping("/api/admin/video-categories")
+@CrossOrigin(origins = "*")
 @Tag(name = "视频分类管理", description = "视频分类相关操作，包括分类的增删改查、树形结构管理等功能")
 public class VideoCategoryController {
 

@@ -1,93 +1,93 @@
 import request from '../utils/request'
 
 /**
- * è§†é¢‘ç›¸å…³çš„API
+ * ÊÓÆµÏà¹ØµÄAPI
  */
 
-// ========== ç”¨æˆ·ç«¯è§†é¢‘API ==========
+// ========== ÓÃ»§¶ËÊÓÆµAPI ==========
 
 /**
- * è·å–è§†é¢‘åˆ—è¡¨ï¼ˆåˆ†é¡µï¼‰
- * @param {Object} params - æŸ¥è¯¢å‚æ•°
- * @param {number} params.page - é¡µç ï¼Œé»˜è®¤1
- * @param {number} params.size - æ¯é¡µå¤§å°ï¼Œé»˜è®¤10
- * @param {number} params.categoryId - åˆ†ç±»IDï¼ˆå¯é€‰ï¼‰
- * @param {string} params.keyword - æœç´¢å…³é”®å­—ï¼ˆå¯é€‰ï¼‰
+ * »ñÈ¡ÊÓÆµÁĞ±í£¨·ÖÒ³£©
+ * @param {Object} params - ²éÑ¯²ÎÊı
+ * @param {number} params.page - Ò³Âë£¬Ä¬ÈÏ1
+ * @param {number} params.size - Ã¿Ò³´óĞ¡£¬Ä¬ÈÏ10
+ * @param {number} params.categoryId - ·ÖÀàID£¨¿ÉÑ¡£©
+ * @param {string} params.keyword - ËÑË÷¹Ø¼ü×Ö£¨¿ÉÑ¡£©
  */
 export function getVideos(params) {
   return request({
-    url: '/api/videos',
+    url: '/api/user/videos',
     method: 'get',
     params
   })
 }
 
 /**
- * è·å–è§†é¢‘è¯¦æƒ…
- * @param {number} id - è§†é¢‘ID
+ * »ñÈ¡ÊÓÆµÏêÇé
+ * @param {number} id - ÊÓÆµID
  */
 export function getVideoDetail(id) {
   return request({
-    url: `/api/videos/${id}`,
+    url: `/api/user/videos/${id}`,
     method: 'get'
   })
 }
 
 /**
- * è·å–çƒ­é—¨è§†é¢‘åˆ—è¡¨
- * @param {number} limit - é™åˆ¶æ•°é‡ï¼Œé»˜è®¤10
+ * »ñÈ¡ÈÈÃÅÊÓÆµÁĞ±í
+ * @param {number} limit - ÏŞÖÆÊıÁ¿£¬Ä¬ÈÏ10
  */
 export function getPopularVideos(limit = 10) {
   return request({
-    url: '/api/videos/popular',
+    url: '/api/user/videos/popular',
     method: 'get',
     params: { limit }
   })
 }
 
 /**
- * è·å–æœ€æ–°è§†é¢‘åˆ—è¡¨
- * @param {number} limit - é™åˆ¶æ•°é‡ï¼Œé»˜è®¤10
+ * »ñÈ¡×îĞÂÊÓÆµÁĞ±í
+ * @param {number} limit - ÏŞÖÆÊıÁ¿£¬Ä¬ÈÏ10
  */
 export function getLatestVideos(limit = 10) {
   return request({
-    url: '/api/videos/latest',
+    url: '/api/user/videos/latest',
     method: 'get',
     params: { limit }
   })
 }
 
 /**
- * è®°å½•è§†é¢‘è§‚çœ‹
- * @param {number} videoId - è§†é¢‘ID
- * @param {number} viewDuration - è§‚çœ‹æ—¶é•¿ï¼ˆç§’ï¼‰
+ * ¼ÇÂ¼ÊÓÆµ¹Û¿´
+ * @param {number} videoId - ÊÓÆµID
+ * @param {number} viewDuration - ¹Û¿´Ê±³¤£¨Ãë£©
  */
 export function recordVideoView(videoId, viewDuration) {
   return request({
-    url: `/api/videos/${videoId}/view`,
+    url: `/api/user/videos/${videoId}/view`,
     method: 'post',
     params: { viewDuration }
   })
 }
 
 /**
- * åˆ‡æ¢è§†é¢‘ç‚¹èµçŠ¶æ€
- * @param {number} videoId - è§†é¢‘ID
+ * ÇĞ»»ÊÓÆµµãÔŞ×´Ì¬
+ * @param {number} videoId - ÊÓÆµID
  */
 export function toggleVideoLike(videoId) {
   return request({
-    url: `/api/videos/${videoId}/like`,
+    url: `/api/user/videos/${videoId}/like`,
     method: 'post'
   })
 }
 
 /**
- * ç”¨æˆ·æŠ•ç¨¿è§†é¢‘
- * @param {FormData} formData - åŒ…å«è§†é¢‘ä¿¡æ¯å’Œæ–‡ä»¶çš„è¡¨å•æ•°æ®
+ * ÓÃ»§Í¶¸åÊÓÆµ
+ * @param {FormData} formData - °üº¬ÊÓÆµĞÅÏ¢ºÍÎÄ¼şµÄ±íµ¥Êı¾İ
  */
 export function submitVideo(formData) {
   return request({
-    url: '/api/videos/submit',
+    url: '/api/user/videos/submit',
     method: 'post',
     data: formData,
     headers: {
@@ -96,11 +96,11 @@ export function submitVideo(formData) {
   })
 }
 
-// ========== ç®¡ç†ç«¯è§†é¢‘API ==========
+// ========== ¹ÜÀí¶ËÊÓÆµAPI ==========
 
 /**
- * ç®¡ç†ç«¯è·å–è§†é¢‘åˆ—è¡¨
- * @param {Object} params - æŸ¥è¯¢å‚æ•°
+ * ¹ÜÀí¶Ë»ñÈ¡ÊÓÆµÁĞ±í
+ * @param {Object} params - ²éÑ¯²ÎÊı
  */
 export function getVideosForAdmin(params) {
   return request({
@@ -111,8 +111,8 @@ export function getVideosForAdmin(params) {
 }
 
 /**
- * ç®¡ç†å‘˜ä¸Šä¼ è§†é¢‘
- * @param {FormData} formData - åŒ…å«è§†é¢‘ä¿¡æ¯å’Œæ–‡ä»¶çš„è¡¨å•æ•°æ®
+ * ¹ÜÀíÔ±ÉÏ´«ÊÓÆµ
+ * @param {FormData} formData - °üº¬ÊÓÆµĞÅÏ¢ºÍÎÄ¼şµÄ±íµ¥Êı¾İ
  */
 export function uploadVideoByAdmin(formData) {
   return request({
@@ -126,10 +126,10 @@ export function uploadVideoByAdmin(formData) {
 }
 
 /**
- * å®¡æ ¸è§†é¢‘
- * @param {number} videoId - è§†é¢‘ID
- * @param {number} status - å®¡æ ¸çŠ¶æ€ï¼ˆ1-é€šè¿‡ï¼Œ2-æ‹’ç»ï¼‰
- * @param {string} reason - å®¡æ ¸åŸå› ï¼ˆæ‹’ç»æ—¶å¿…å¡«ï¼‰
+ * ÉóºËÊÓÆµ
+ * @param {number} videoId - ÊÓÆµID
+ * @param {number} status - ÉóºË×´Ì¬£¨1-Í¨¹ı£¬2-¾Ü¾ø£©
+ * @param {string} reason - ÉóºËÔ­Òò£¨¾Ü¾øÊ±±ØÌî£©
  */
 export function auditVideo(videoId, status, reason) {
   return request({
@@ -140,8 +140,8 @@ export function auditVideo(videoId, status, reason) {
 }
 
 /**
- * ä¸‹æ¶è§†é¢‘
- * @param {number} videoId - è§†é¢‘ID
+ * ÏÂ¼ÜÊÓÆµ
+ * @param {number} videoId - ÊÓÆµID
  */
 export function offlineVideo(videoId) {
   return request({
@@ -151,8 +151,8 @@ export function offlineVideo(videoId) {
 }
 
 /**
- * åˆ é™¤è§†é¢‘
- * @param {number} videoId - è§†é¢‘ID
+ * É¾³ıÊÓÆµ
+ * @param {number} videoId - ÊÓÆµID
  */
 export function deleteVideo(videoId) {
   return request({
@@ -162,7 +162,7 @@ export function deleteVideo(videoId) {
 }
 
 /**
- * è·å–è§†é¢‘ç»Ÿè®¡æ•°æ®
+ * »ñÈ¡ÊÓÆµÍ³¼ÆÊı¾İ
  */
 export function getVideoStatistics() {
   return request({
@@ -172,9 +172,9 @@ export function getVideoStatistics() {
 }
 
 /**
- * è·å–è§†é¢‘è¯¦ç»†ç»Ÿè®¡æ•°æ®
- * @param {number} videoId - è§†é¢‘ID
- * @param {number} days - ç»Ÿè®¡å¤©æ•°ï¼Œé»˜è®¤30å¤©
+ * »ñÈ¡ÊÓÆµÏêÏ¸Í³¼ÆÊı¾İ
+ * @param {number} videoId - ÊÓÆµID
+ * @param {number} days - Í³¼ÆÌìÊı£¬Ä¬ÈÏ30Ìì
  */
 export function getVideoDetailStats(videoId, days = 30) {
   return request({
@@ -182,4 +182,4 @@ export function getVideoDetailStats(videoId, days = 30) {
     method: 'get',
     params: { days }
   })
-} 
+}

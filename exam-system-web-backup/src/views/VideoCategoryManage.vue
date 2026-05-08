@@ -63,7 +63,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Refresh, Edit, Delete, Switch, Expand, Fold } from '@element-plus/icons-vue'
-import { getVideoCategories, getCategoryTree, addVideoCategory, updateVideoCategory, deleteVideoCategory } from '../api/videoCategory'
+import { getVideoCategoriesForAdmin, getVideoCategoryTreeForAdmin, addVideoCategory, updateVideoCategory, deleteVideoCategory } from '../api/videoCategory'
 
 const categoryList = ref([])
 const loading = ref(false)
@@ -87,9 +87,9 @@ const categoryTreeOptions = ref([])
 const getCategoryList = async () => {
   loading.value = true
   try {
-    const res = await getCategoryTree()
+    const res = await getVideoCategoryTreeForAdmin()
     categoryList.value = res.data
-    const flatRes = await getVideoCategories()
+    const flatRes = await getVideoCategoriesForAdmin()
     categoryTreeOptions.value = buildTreeOptions(flatRes.data)
   } catch (error) {
     console.error('获取分类列表失败：', error)

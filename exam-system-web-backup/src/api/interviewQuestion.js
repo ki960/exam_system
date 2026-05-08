@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// è·å–ä¼ä¸šçœŸé¢˜åˆ—è¡¨
+// »ñÈ¡ÆóÒµÕæÌâÁĞ±í
 export function getInterviewQuestions(params) {
   return request({
     url: '/api/interview-questions/list',
@@ -9,7 +9,7 @@ export function getInterviewQuestions(params) {
   })
 }
 
-// è·å–çœŸé¢˜è¯¦æƒ…
+// »ñÈ¡ÕæÌâÏêÇé
 export function getInterviewQuestionDetail(id) {
   return request({
     url: `/api/interview-questions/${id}`,
@@ -17,7 +17,7 @@ export function getInterviewQuestionDetail(id) {
   })
 }
 
-// ä¸Šä¼ ä¼ä¸šçœŸé¢˜
+// ÉÏ´«ÆóÒµÕæÌâ
 export function uploadQuestion(data) {
   return request({
     url: '/api/user-contributions/upload',
@@ -26,7 +26,7 @@ export function uploadQuestion(data) {
   })
 }
 
-// è·å–çƒ­é—¨é¢˜ç›®
+// »ñÈ¡ÈÈÃÅÌâÄ¿
 export function getHotQuestions(limit = 10) {
   return request({
     url: '/api/interview-questions/hot',
@@ -35,7 +35,7 @@ export function getHotQuestions(limit = 10) {
   })
 }
 
-// è·å–æœ€æ–°é¢˜ç›®
+// »ñÈ¡×îĞÂÌâÄ¿
 export function getLatestQuestions(limit = 10) {
   return request({
     url: '/api/interview-questions/latest',
@@ -44,7 +44,7 @@ export function getLatestQuestions(limit = 10) {
   })
 }
 
-// å¢åŠ æµè§ˆæ¬¡æ•°
+// Ôö¼Óä¯ÀÀ´ÎÊı
 export function incrementViewCount(id) {
   return request({
     url: `/api/interview-questions/${id}/view`,
@@ -52,7 +52,7 @@ export function incrementViewCount(id) {
   })
 }
 
-// è·å–æŠ€æœ¯æ–¹å‘ç»Ÿè®¡
+// »ñÈ¡¼¼Êõ·½ÏòÍ³¼Æ
 export function getDirectionStats() {
   return request({
     url: '/api/interview-questions/stats/direction',
@@ -60,7 +60,7 @@ export function getDirectionStats() {
   })
 }
 
-// è·å–å…¬å¸ç»Ÿè®¡
+// »ñÈ¡¹«Ë¾Í³¼Æ
 export function getCompanyStats() {
   return request({
     url: '/api/interview-questions/stats/company',
@@ -68,7 +68,7 @@ export function getCompanyStats() {
   })
 }
 
-// æ¨¡æ‹Ÿé¢è¯•ç›¸å…³API
+// Ä£ÄâÃæÊÔÏà¹ØAPI
 export function startMockInterview(data) {
   return request({
     url: '/api/mock-interview/start',
@@ -94,7 +94,7 @@ export function completeMockInterview(interviewId) {
 
 export function getMockInterviewDetail(interviewId) {
   return request({
-    url: `/interview/mock-interview/${interviewId}`,
+    url: `/api/mock-interview/${interviewId}`,
     method: 'get'
   })
 }
@@ -107,10 +107,10 @@ export function getUserInterviewRecords(userId, params) {
   })
 }
 
-// é‚€è¯·ç ç›¸å…³API
+// ÑûÇëÂëÏà¹ØAPI
 export function getInterviewCodes(params) {
   return request({
-    url: '/interview/codes',
+    url: '/api/interview/codes',
     method: 'get',
     params
   })
@@ -118,7 +118,7 @@ export function getInterviewCodes(params) {
 
 export function generateInterviewCodes(data) {
   return request({
-    url: '/interview/codes/generate',
+    url: '/api/interview/codes/generate',
     method: 'post',
     data
   })
@@ -126,7 +126,7 @@ export function generateInterviewCodes(data) {
 
 export function activateInterviewCode(code) {
   return request({
-    url: '/interview/codes/activate',
+    url: '/api/interview/codes/activate',
     method: 'post',
     data: { code }
   })
@@ -134,27 +134,27 @@ export function activateInterviewCode(code) {
 
 export function deleteInterviewCode(codeId) {
   return request({
-    url: `/interview/codes/${codeId}`,
+    url: `/api/interview/codes/${codeId}`,
     method: 'delete'
   })
 }
 
 export function getInviteesList() {
   return request({
-    url: '/interview/codes/invitees',
+    url: '/api/interview/codes/invitees',
     method: 'get'
   })
 }
 
 export function requestInterviewCode(data) {
   return request({
-    url: '/interview/codes/request',
+    url: '/api/interview/codes/request',
     method: 'post',
     data
   })
 }
 
-// ç”¨æˆ·ç§¯åˆ†ç›¸å…³API
+// ÓÃ»§»ı·ÖÏà¹ØAPI
 export function getUserCredits(userId) {
   return request({
     url: `/api/user-interview-credits/user/${userId}`,
@@ -169,35 +169,35 @@ export function getActiveCredits(userId) {
   })
 }
 
-// è·å–é¢è¯•ç»“æœ
+// »ñÈ¡ÃæÊÔ½á¹û
 export function getInterviewResult(interviewId) {
   return request({
-    url: `/interview/result/${interviewId}`,
+    url: `/api/interview/result/${interviewId}`,
     method: 'get'
   })
 }
 
-// è·å–ç”¨æˆ·é¢è¯•å†å²
+// »ñÈ¡ÓÃ»§ÃæÊÔÀúÊ·
 export function getUserInterviewHistory(params) {
   return request({
-    url: '/interview/history',
+    url: '/api/interview/history',
     method: 'get',
     params
   })
 }
 
-// è·å–é¢è¯•ç»Ÿè®¡æ•°æ®
+// »ñÈ¡ÃæÊÔÍ³¼ÆÊı¾İ
 export function getInterviewStatistics() {
   return request({
-    url: '/interview/statistics',
+    url: '/api/interview/statistics',
     method: 'get'
   })
 }
 
-// åˆ†äº«é¢è¯•ç»“æœ
+// ·ÖÏíÃæÊÔ½á¹û
 export function shareInterviewResult(interviewId, shareType) {
   return request({
-    url: '/interview/share',
+    url: '/api/interview/share',
     method: 'post',
     data: {
       interviewId,
@@ -206,16 +206,10 @@ export function shareInterviewResult(interviewId, shareType) {
   })
 }
 
-// è·å–ç§¯åˆ†å†å²
+// »ñÈ¡»ı·ÖÀúÊ·
 export function getCreditsHistory() {
   return request({
-    url: '/interview/credits/history',
+    url: '/api/interview/credits/history',
     method: 'get'
   })
 }
-
-// ç”¨æˆ·è´¡çŒ®ç›¸å…³API
-// å·²å½»åº•åˆ é™¤ getUserContributions æ–¹æ³•
-// å·²å½»åº•åˆ é™¤ getContributionStats æ–¹æ³•
-// å·²å½»åº•åˆ é™¤ getContributionRanking æ–¹æ³•
-// å·²å½»åº•åˆ é™¤ submitContribution æ–¹æ³• 

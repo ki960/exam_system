@@ -377,7 +377,7 @@ const statsDialogVisible = ref(false)
 const getCategoryTree = async () => {
   try {
     console.log('开始获取分类树...') // 调试信息
-    const res = await request.get('/api/categories/tree')
+    const res = await request.get('/api/user/categories/tree')
     categoryTree.value = res.data || []
     console.log('分类树数据：', categoryTree.value) // 调试信息
     
@@ -420,7 +420,7 @@ const getCategoryTree = async () => {
 // 获取题目总数，用于显示统计信息
 const getQuestionStats = async () => {
   try {
-    const allRes = await request.get('/api/questions/list', { params: { page: 1, size: 9999 } })
+    const allRes = await request.get('/api/user/questions/list', { params: { page: 1, size: 9999 } })
     totalQuestions.value = allRes.data.total || 0
   } catch (error) {
     console.error('获取题目统计失败：', error)
@@ -478,7 +478,7 @@ const getQuestionList = async () => {
     console.log('请求参数：', params) // 调试信息
     
     // 发送请求获取题目列表  // 向后端发送请求
-    const res = await request.get('/api/questions/list', { params })
+    const res = await request.get('/api/user/questions/list', { params })
     
     console.log('API响应：', res) // 调试信息
     
@@ -539,7 +539,7 @@ const getCollectedQuestions = async () => {
     }
     
     // 发送请求获取题目  // 向后端请求题目数据
-    const res = await request.get('/api/questions/list', { params })
+    const res = await request.get('/api/user/questions/list', { params })
     
     // 筛选出收藏的题目  // 筛选收藏的题目并应用关键词搜索
     const allQuestions = res.data.records || []
@@ -576,7 +576,7 @@ const getCollectedQuestions = async () => {
 const loadPracticeRecords = async () => {
   try {
     // 这里需要实现获取用户练习记录的API
-    // const res = await request.get('/practice/records', { 
+    // const res = await request.get('/api/user/practice/records', { 
     //   params: { questionIds: questionList.value.map(q => q.id) }
     // })
     // 暂时使用本地存储模拟
@@ -620,7 +620,7 @@ const savePracticeRecord = (question) => {
 const updatePracticeStats = async () => {
   try {
     // 获取所有题目数量
-    const allQuestionsRes = await request.get('/api/questions/list', { 
+    const allQuestionsRes = await request.get('/api/user/questions/list', { 
       params: { page: 1, size: 9999 } // 获取所有题目
     })
     const allQuestions = allQuestionsRes.data.records
@@ -767,7 +767,7 @@ const toggleAnswer = async (question) => {
   // 如果答案尚未显示，则从后端获取详细信息
   if (!question.showAnswer) {
     try {
-      const res = await request.get(`/api/questions/${question.id}`);
+      const res = await request.get(`/api/user/questions/${question.id}`);
       if (res.data) {
         // 将获取到的详细信息合并到当前题目对象中
         Object.assign(question, res.data);

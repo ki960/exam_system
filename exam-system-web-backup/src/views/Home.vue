@@ -259,7 +259,7 @@ const activeBannerIndex = ref(0)
 // 获取轮播图数据
 const getBannerList = async () => {
   try {
-    const res = await request.get('/api/banners/active')
+    const res = await request.get('/api/common/banners/active')
     bannerList.value = res.data || []
     console.log('轮播图数据加载完成')
   } catch (error) {
@@ -297,7 +297,7 @@ const getBannerList = async () => {
 // 获取公告数据
 const getNoticeList = async () => {
   try {
-    const res = await request.get('/api/notices/latest', { params: { limit: 5 } })
+    const res = await request.get('/api/user/notices/latest', { params: { limit: 5 } })
     noticeList.value = res.data || []
     console.log('公告数据加载完成')
   } catch (error) {
@@ -335,7 +335,7 @@ const getNoticeList = async () => {
 // 获取热门题目
 const getPopularQuestions = async () => {
   try {
-    const res = await request.get('/api/questions/popular', { params: { size: 6 } })
+    const res = await request.get('/api/user/questions/popular', { params: { size: 6 } })
     popularQuestions.value = res.data || []
   } catch (error) {
     console.error('获取热门题目失败：', error)
@@ -346,7 +346,7 @@ const getPopularQuestions = async () => {
 const getStats = async () => {
   try {
     // 调用后台API获取真实统计数据  // 从数据库获取真实数据
-    const res = await request.get('/api/stats/overview')
+    const res = await request.get('/api/common/stats/overview')
     if (res.code === 200) {
       stats.value = {
         questionCount: res.data.questionCount || 0,
@@ -509,7 +509,7 @@ const handleAdminLogin = async () => {
     if (valid) {
       adminLoginLoading.value = true
       try {
-        const res = await request.post('/api/user/login', adminLoginForm)
+        const res = await request.post('/api/common/user/login', adminLoginForm)
         localStorage.setItem('userInfo', JSON.stringify(res.data))
         ElMessage.success('登录成功，正在跳转到管理员后台...')
         adminLoginVisible.value = false

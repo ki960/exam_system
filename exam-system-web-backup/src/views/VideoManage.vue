@@ -158,7 +158,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Refresh, Edit, Delete, Plus, VideoPlay, Check, Close, Bottom, UploadFilled, Picture } from '@element-plus/icons-vue'
 import { getVideosForAdmin, uploadVideoByAdmin, auditVideo, offlineVideo, deleteVideo } from '../api/video'
-import { getVideoCategories, getVideoCategoryTree } from '../api/videoCategory'
+import { getVideoCategoriesForAdmin, getVideoCategoryTreeForAdmin } from '../api/videoCategory'
 
 const searchForm = reactive({ keyword: '', status: '', uploaderType: '', categoryId: '' })
 const videoList = ref([])
@@ -194,11 +194,22 @@ const getStatusText = (status) => ({ 0: '待审核', 1: '已发布', 2: '已拒�
 const getVideoList = async () => {
   loading.value = true
   try {
-    const res = await getVideosForAdmin({ page: pagination.current, size: pagination.size, ...searchForm })
-    videoList.value = res.data.records
-    pagination.total = res.data.total
+    const params = {
+      page: pagination.current,
+      size: pagination.size,
+      keyword: searchForm.keyword || undefined,
+      status: searchForm.status ? parseInt(searchForm.status) : undefined,
+      uploaderType: searchForm.uploaderType ? parseInt(searchForm.uploaderType) : undefined,
+      categoryId: searchForm.categoryId ? parseInt(searchForm.categoryId) : undefined
+    }
+    const res = await getVideosForAdmin(params)
+    videoList.value = res.data.records || []
+    pagination.total = res.data.total || 0
+    console.log('视频列表数据：', videoList.value)
   } catch (error) {
     console.error('获取视频列表失败：', error)
+    videoList.value = []
+    pagination.total = 0
   } finally {
     loading.value = false
   }
@@ -206,9 +217,9 @@ const getVideoList = async () => {
 
 const getCategoryList = async () => {
   try {
-    const res = await getVideoCategories()
+    const res = await getVideoCategoriesForAdmin()
     categories.value = res.data
-    const treeRes = await getVideoCategoryTree()
+    const treeRes = await getVideoCategoryTreeForAdmin()
     categoryTree.value = treeRes.data || []
   } catch (error) {
     console.error('获取分类列表失败：', error)

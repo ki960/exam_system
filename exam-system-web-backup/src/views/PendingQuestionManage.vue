@@ -170,7 +170,7 @@ export default {
       const formData = new FormData();
       formData.append('file', param.file);
       try {
-        const res = await request.post('/api/upload', formData, {
+        const res = await request.post('/api/admin/upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         // 上传成功后，将图片url加入imageUrls
@@ -202,7 +202,7 @@ export default {
         return;
       }
       try {
-        await request.post('/api/pending-questions', {
+        await request.post('/api/admin/pending-questions', {
           content: this.uploadForm.content,
           image_urls: this.uploadForm.imageUrls,
           contact: this.uploadForm.contact
@@ -224,7 +224,7 @@ export default {
         };
         if (this.filters.status !== '') params.status = this.filters.status;
         if (this.filters.keyword) params.keyword = this.filters.keyword;
-        const res = await request.get('/api/pending-questions', { params });
+        const res = await request.get('/api/admin/pending-questions', { params });
         this.list = res.data.records;
         this.total = res.data.total;
         this.page = page;
@@ -264,7 +264,7 @@ export default {
           inputPattern: /.{0,255}/,
           inputErrorMessage: '备注不能超过255字'
         });
-        await request.post('/api/pending-questions/review', {
+        await request.post('/api/admin/pending-questions/review', {
           id: row.id,
           status,
           admin_remark: value
