@@ -1,16 +1,13 @@
 <template>
   <div id="app">
-    <!-- 路由视图 -->
     <router-view />
   </div>
 </template>
 
 <script setup>
-// 这里可以添加全局的逻辑
 </script>
 
 <style>
-/* 全局样式 */
 * {
   margin: 0;
   padding: 0;
@@ -18,11 +15,13 @@
 }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-  background-color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  background-color: #F5F7FA;
+  color: #1E293B;
+  line-height: 1.6;
 }
 
 #app {
   min-height: 100vh;
 }
-</style> 
+</style>

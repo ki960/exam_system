@@ -1,23 +1,19 @@
 <template>
   <div class="home-page">
-    <!-- 顶部导航栏 -->
     <div class="navbar">
       <div class="logo">
         <img src="../assets/logo.svg" alt="logo" class="logo-img" />
-        <span class="title">智能学习平台</span>
+        <span class="title">AI链习室</span>
       </div>
       <div class="nav-actions">
-        <el-button type="primary" @click="goToExam" icon="Document">考试入口</el-button>
-        <el-button @click="goToRanking" icon="Trophy">考试排行榜</el-button>
-        <el-button @click="showAdminLogin" icon="Edit">管理员后台</el-button>
+        <el-button @click="goToExam" :icon="Document">考试入口</el-button>
+        <el-button @click="goToRanking" :icon="Trophy">考试排行榜</el-button>
+        <el-button type="primary" @click="showAdminLogin" :icon="Edit">管理员后台</el-button>
       </div>
     </div>
 
-    <!-- 主体内容区域 -->
     <div class="main-container">
-      <!-- 顶部横幅区域 -->
       <div class="hero-section">
-        <!-- 轮播图区域 -->
         <div class="carousel-section">
           <el-carousel 
             v-model="activeBannerIndex"
@@ -34,96 +30,65 @@
           </el-carousel>
         </div>
 
-        <!-- 轮播公告区域 -->
         <div class="notice-section">
           <div class="notice-header">
             <el-icon class="notice-icon"><Bell /></el-icon>
             <span class="notice-title">系统公告</span>
           </div>
-          <div class="notice-carousel">
-            <el-carousel 
-              direction="vertical" 
-              :interval="3000" 
-              height="220px"
-              :show-arrow="false"
-              indicator-position="none"
+          <div class="notice-list">
+            <div 
+              class="notice-item" 
+              v-for="(notice, index) in noticeList.slice(0, 3)" 
+              :key="index"
+              @click="handleNoticeClick(notice)"
             >
-              <el-carousel-item v-for="(notice, index) in noticeList" :key="index">
-                <div class="notice-item" @click="handleNoticeClick(notice)">
-                  <div class="notice-date">
-                    <span class="date-day">{{ formatNoticeDate(notice.createTime).day }}</span>
-                    <span class="date-month">{{ formatNoticeDate(notice.createTime).month }}</span>
-                  </div>
-                  <div class="notice-content">
-                    <h4 class="notice-item-title">{{ notice.title }}</h4>
-                    <p class="notice-item-desc">{{ notice.content }}</p>
-                    <div class="notice-meta">
-                      <el-tag size="small" :type="getNoticeTypeTag(notice.type)">
-                        {{ getNoticeTypeText(notice.type) }}
-                      </el-tag>
-                      <span class="notice-time">{{ formatTime(notice.createTime) }}</span>
-                    </div>
-                  </div>
-                </div>
-              </el-carousel-item>
-            </el-carousel>
+              <div class="notice-item-content">
+                <h4 class="notice-item-title">{{ notice.title }}</h4>
+                <p class="notice-item-desc">{{ notice.content }}</p>
+              </div>
+              <el-tag size="small" :type="getNoticeTypeTag(notice.type)">
+                {{ getNoticeTypeText(notice.type) }}
+              </el-tag>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 快捷功能区域 -->
       <div class="quick-actions">
         <h2 class="section-title">快捷功能</h2>
         <div class="action-cards">
           <div class="action-card" @click="goToExam">
-            <el-icon class="card-icon exam-icon"><Document /></el-icon>
+            <el-icon class="card-icon"><Document /></el-icon>
             <h3>智能考试</h3>
-            <p>AI智能出题，自动批阅，精准评估学习效果</p>
+            <p>AI智能出题，自动批阅</p>
           </div>
           <div class="action-card" @click="goToPractice">
-            <el-icon class="card-icon practice-icon"><Edit /></el-icon>
+            <el-icon class="card-icon"><Edit /></el-icon>
             <h3>智能刷题</h3>
-            <p>AI推荐题目，个性化练习，智能分析弱项</p>
+            <p>个性化练习，智能分析</p>
           </div>
-          <!-- 移除企业真题卡片 -->
-          <!--
-          <div class="action-card" @click="goToInterviewQuestions">
-            <el-icon class="card-icon interview-icon"><ChatDotRound /></el-icon>
-            <h3>企业真题</h3>
-            <p>各大企业真实面试题，提前了解面试重点</p>
-          </div>
-          -->
-          <!-- 移除模拟面试卡片 -->
-          <!--
-          <div class="action-card" @click="goToMockInterview">
-            <el-icon class="card-icon mock-icon"><Microphone /></el-icon>
-            <h3>模拟面试</h3>
-            <p>AI模拟面试官，语音答题，智能评分反馈</p>
-          </div>
-          -->
           <div class="action-card" @click="goToRanking">
-            <el-icon class="card-icon ranking-icon"><Trophy /></el-icon>
+            <el-icon class="card-icon"><Trophy /></el-icon>
             <h3>学习排行</h3>
-            <p>查看学习排名，与同学竞争，激发学习动力</p>
+            <p>查看排名，激发动力</p>
           </div>
           <div class="action-card" @click="goToAnalysis">
-            <el-icon class="card-icon analysis-icon"><DataAnalysis /></el-icon>
+            <el-icon class="card-icon"><DataAnalysis /></el-icon>
             <h3>AI分析</h3>
-            <p>智能学习报告，能力雷达图，个性化学习建议</p>
+            <p>智能报告，个性化建议</p>
           </div>
           <div class="action-card" @click="goToVideos">
-            <el-icon class="card-icon video-icon"><VideoPlay /></el-icon>
+            <el-icon class="card-icon"><VideoPlay /></el-icon>
             <h3>视频百科</h3>
-            <p>技术点讲解视频，分类学习，互动点赞分享</p>
+            <p>技术讲解，分类学习</p>
           </div>
         </div>
       </div>
 
-      <!-- 热门题目推荐 -->
       <div class="popular-section">
         <div class="section-header">
           <h2 class="section-title">热门题目</h2>
-          <el-button text @click="goToPractice">查看更多 →</el-button>
+          <el-button text @click="goToPractice">查看更多</el-button>
         </div>
         <div class="popular-grid">
           <div class="popular-card" v-for="question in popularQuestions" :key="question.id">
@@ -138,14 +103,13 @@
             <h4 class="question-title">{{ question.title }}</h4>
             <p class="question-category">{{ question.categoryName }}</p>
             <div class="question-stats">
-              <span><el-icon><View /></el-icon> {{ question.viewCount || 0 }}次查看</span>
-              <span><el-icon><Check /></el-icon> {{ question.correctRate || 0 }}%正确率</span>
+              <span><el-icon><View /></el-icon> {{ question.viewCount || 0 }}</span>
+              <span><el-icon><Check /></el-icon> {{ question.correctRate || 0 }}%</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 统计数据展示 -->
       <div class="stats-section">
         <div class="stats-grid">
           <div class="stat-card">
@@ -180,7 +144,6 @@
       </div>
     </div>
 
-    <!-- 管理员登录对话框 -->
     <el-dialog v-model="adminLoginVisible" title="管理员登录" width="400px" :close-on-click-modal="false">
       <el-form :model="adminLoginForm" :rules="adminLoginRules" ref="adminLoginFormRef" label-width="80px">
         <el-form-item label="用户名" prop="username">
@@ -196,7 +159,6 @@
       </template>
     </el-dialog>
 
-    <!-- 公告详情对话框 -->
     <el-dialog v-model="noticeDetailVisible" :title="selectedNotice?.title" width="600px">
       <div class="notice-detail" v-if="selectedNotice">
         <div class="notice-detail-meta">
@@ -222,16 +184,9 @@ import request from '../utils/request'
 
 const router = useRouter()
 
-// 轮播图数据（示例数据）
 const bannerList = ref([])
-
-// 公告数据（示例数据）
 const noticeList = ref([])
-
-// 热门题目数据
 const popularQuestions = ref([])
-
-// 统计数据
 const stats = ref({
   questionCount: 0,
   userCount: 0,
@@ -239,7 +194,6 @@ const stats = ref({
   todayExamCount: 0
 })
 
-// 管理员登录相关
 const adminLoginVisible = ref(false)
 const adminLoginLoading = ref(false)
 const adminLoginFormRef = ref()
@@ -249,14 +203,10 @@ const adminLoginRules = {
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
 
-// 公告详情
 const noticeDetailVisible = ref(false)
 const selectedNotice = ref(null)
-
-// 轮播图当前索引
 const activeBannerIndex = ref(0)
 
-// 获取轮播图数据
 const getBannerList = async () => {
   try {
     const res = await request.get('/api/common/banners/active')
@@ -264,7 +214,6 @@ const getBannerList = async () => {
     console.log('轮播图数据加载完成')
   } catch (error) {
     console.error('获取轮播图数据失败：', error)
-    // 如果API失败，使用示例数据
     bannerList.value = [
       {
         id: 1,
@@ -294,7 +243,6 @@ const getBannerList = async () => {
   }
 }
 
-// 获取公告数据
 const getNoticeList = async () => {
   try {
     const res = await request.get('/api/user/notices/latest', { params: { limit: 5 } })
@@ -302,7 +250,6 @@ const getNoticeList = async () => {
     console.log('公告数据加载完成')
   } catch (error) {
     console.error('获取公告数据失败：', error)
-    // 如果API失败，使用示例数据
     noticeList.value = [
       {
         id: 1,
@@ -332,7 +279,6 @@ const getNoticeList = async () => {
   }
 }
 
-// 获取热门题目
 const getPopularQuestions = async () => {
   try {
     const res = await request.get('/api/user/questions/popular', { params: { size: 6 } })
@@ -342,10 +288,8 @@ const getPopularQuestions = async () => {
   }
 }
 
-// 获取统计数据
 const getStats = async () => {
   try {
-    // 调用后台API获取真实统计数据  // 从数据库获取真实数据
     const res = await request.get('/api/common/stats/overview')
     if (res.code === 200) {
       stats.value = {
@@ -357,7 +301,6 @@ const getStats = async () => {
       console.log('统计数据获取成功：', stats.value)
     } else {
       console.error('获取统计数据失败：', res.message)
-      // 使用默认值  // 接口失败时的备用数据
       stats.value = {
         questionCount: 0,
         userCount: 0,
@@ -367,7 +310,6 @@ const getStats = async () => {
     }
   } catch (error) {
     console.error('获取统计数据失败：', error)
-    // 接口调用失败时使用默认值  // 网络错误时的备用数据
     stats.value = {
       questionCount: 0,
       userCount: 0,
@@ -377,7 +319,6 @@ const getStats = async () => {
   }
 }
 
-// 轮播图点击处理
 const handleBannerClick = (banner) => {
   if (banner.linkUrl) {
     if (banner.linkUrl.startsWith('http://') || banner.linkUrl.startsWith('https://')) {
@@ -388,13 +329,11 @@ const handleBannerClick = (banner) => {
   }
 }
 
-// 公告点击处理
 const handleNoticeClick = (notice) => {
   selectedNotice.value = notice
   noticeDetailVisible.value = true
 }
 
-// 格式化公告日期
 const formatNoticeDate = (dateStr) => {
   const date = new Date(dateStr)
   return {
@@ -403,22 +342,19 @@ const formatNoticeDate = (dateStr) => {
   }
 }
 
-// 格式化时间
 const formatTime = (dateStr) => {
   return new Date(dateStr).toLocaleString('zh-CN')
 }
 
-// 获取公告类型标签样式
 const getNoticeTypeTag = (type) => {
   const tagMap = {
-    'SYSTEM': 'danger',
+    'SYSTEM': 'primary',
     'FEATURE': 'success',
-    'NOTICE': 'warning'
+    'NOTICE': 'info'
   }
   return tagMap[type] || 'info'
 }
 
-// 获取公告类型文本
 const getNoticeTypeText = (type) => {
   const textMap = {
     'SYSTEM': '系统',
@@ -428,17 +364,15 @@ const getNoticeTypeText = (type) => {
   return textMap[type] || '其他'
 }
 
-// 获取题目类型标签样式
 const getQuestionTypeTag = (type) => {
   const tagMap = {
     'CHOICE': 'primary',
     'JUDGE': 'success',
-    'TEXT': 'warning'
+    'TEXT': 'info'
   }
   return tagMap[type] || 'info'
 }
 
-// 获取题目类型文本
 const getQuestionTypeText = (type) => {
   const textMap = {
     'CHOICE': '选择题',
@@ -448,17 +382,15 @@ const getQuestionTypeText = (type) => {
   return textMap[type] || type
 }
 
-// 获取难度标签样式
 const getDifficultyType = (difficulty) => {
   const typeMap = {
     'EASY': 'success',
-    'MEDIUM': 'warning',
-    'HARD': 'danger'
+    'MEDIUM': 'info',
+    'HARD': 'warning'
   }
   return typeMap[difficulty] || 'info'
 }
 
-// 获取难度文本
 const getDifficultyText = (difficulty) => {
   const textMap = {
     'EASY': '简单',
@@ -468,7 +400,6 @@ const getDifficultyText = (difficulty) => {
   return textMap[difficulty] || difficulty
 }
 
-// 导航功能
 const goToExam = () => {
   router.push('/exam/list')
 }
@@ -497,12 +428,10 @@ const goToMockInterview = () => {
   router.push('/mock-interview')
 }
 
-// 管理员登录弹窗
 const showAdminLogin = () => {
   adminLoginVisible.value = true
 }
 
-// 管理员登录
 const handleAdminLogin = async () => {
   if (!adminLoginFormRef.value) return
   await adminLoginFormRef.value.validate(async (valid) => {
@@ -517,7 +446,6 @@ const handleAdminLogin = async () => {
         adminLoginForm.password = ''
         router.push('/admin')
       } catch (e) {
-        // 错误提示由axios拦截器处理
       } finally {
         adminLoginLoading.value = false
       }
@@ -525,7 +453,6 @@ const handleAdminLogin = async () => {
   })
 }
 
-// 初始化
 onMounted(() => {
   getBannerList()
   getNoticeList()
@@ -537,22 +464,21 @@ onMounted(() => {
 <style scoped>
 .home-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);  /* 小清新渐变：薄荷绿到淡粉色 */
+  background-color: #F5F7FA;
 }
 
-/* 导航栏样式 */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 0 40px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 0 24px;
   height: 64px;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .logo {
@@ -561,49 +487,65 @@ onMounted(() => {
 }
 
 .logo-img {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   margin-right: 12px;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1E293B;
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
-/* 主容器 */
+.nav-actions :deep(.el-button) {
+  font-size: 13px;
+  padding: 6px 16px;
+  border-radius: 4px;
+}
+
+.nav-actions :deep(.el-button--primary) {
+  background-color: #3B82F6;
+  border-color: #3B82F6;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.nav-actions :deep(.el-button:not(.el-button--primary)) {
+  color: #64748B;
+  border-color: #E2E8F0;
+}
+
+.nav-actions :deep(.el-button:not(.el-button--primary):hover) {
+  background-color: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
 .main-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 32px 24px;
 }
 
-/* 顶部横幅区域 */
 .hero-section {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 30px;
-  margin-bottom: 60px;
+  gap: 24px;
+  margin-bottom: 48px;
 }
 
-/* 轮播图区域 */
 .carousel-section {
-  /* 移除背景色、阴影、边框，保证图片无遮挡 */
-  background: none;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: none;
-  border: none;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .banner-item {
@@ -611,8 +553,6 @@ onMounted(() => {
   height: 100%;
   position: relative;
   cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.3s ease;
 }
 
 .banner-img {
@@ -622,244 +562,189 @@ onMounted(() => {
   display: block;
 }
 
-.banner-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* 极浅黑色半透明蒙层，图片主体非常清晰 */
-  background: rgba(0,0,0,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-content {
-  text-align: center;
-  color: white;
-  padding: 24px;  /* 适当减少内边距 */
-}
-
-.banner-title {
-  font-size: 2rem;  /* 适当减小标题字体 */
-  font-weight: bold;
-  margin-bottom: 14px;
-  /* 主标题底色极淡，图片更清晰 */
-  background: rgba(0,0,0,0.12);
-  border-radius: 10px;
-  padding: 6px 24px;
-  display: inline-block;
-  text-shadow: 0 4px 16px rgba(0,0,0,0.7), 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.banner-desc {
-  font-size: 1.1rem;  /* 适当减小描述字体 */
-  margin-bottom: 20px;
-  opacity: 0.95;
-  line-height: 1.6;
-  /* 副标题底色极淡，图片更清晰 */
-  background: rgba(0,0,0,0.06);
-  border-radius: 8px;
-  padding: 4px 16px;
-  display: inline-block;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
-
-/* 公告区域 */
 .notice-section {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .notice-header {
   display: flex;
   align-items: center;
-  padding: 20px 24px;
-  background: linear-gradient(45deg, #ff6b6b, #ffa500);
-  color: white;
+  padding: 16px 20px;
+  border-bottom: 1px solid #E2E8F0;
 }
 
 .notice-icon {
-  font-size: 20px;
+  font-size: 16px;
   margin-right: 8px;
+  color: #3B82F6;
 }
 
 .notice-title {
-  font-size: 1.1rem;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E293B;
 }
 
-.notice-carousel {
-  height: 220px;
+.notice-list {
+  padding: 0;
 }
 
 .notice-item {
   display: flex;
-  padding: 20px 24px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  height: 100%;
   align-items: center;
+  padding: 16px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #F1F5F9;
+  transition: background-color 0.2s ease;
+}
+
+.notice-item:last-child {
+  border-bottom: none;
 }
 
 .notice-item:hover {
-  background-color: #f8f9fa;
+  background-color: #F8FAFC;
 }
 
-.notice-date {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  color: white;
-  border-radius: 12px;
-  margin-right: 16px;
-  flex-shrink: 0;
-}
-
-.date-day {
-  font-size: 1.5rem;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.date-month {
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-.notice-content {
+.notice-item-content {
   flex: 1;
   min-width: 0;
 }
 
 .notice-item-title {
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
+  color: #1E293B;
+  margin: 0 0 4px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .notice-item-desc {
-  font-size: 0.875rem;
-  color: #666;
-  margin-bottom: 12px;
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-height: 1.4;
 }
 
-.notice-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.notice-item :deep(.el-tag) {
+  flex-shrink: 0;
+  margin-left: 12px;
+  border-radius: 4px;
 }
 
-.notice-time {
-  font-size: 0.75rem;
-  color: #999;
+.notice-item :deep(.el-tag--primary) {
+  background-color: #FEF2F2;
+  border-color: #FECACA;
+  color: #DC2626;
 }
 
-/* 快捷功能区域 */
+.notice-item :deep(.el-tag--success) {
+  background-color: #ECFDF5;
+  border-color: #A7F3D0;
+  color: #059669;
+}
+
+.notice-item :deep(.el-tag--info) {
+  background-color: #EFF6FF;
+  border-color: #BFDBFE;
+  color: #2563EB;
+}
+
 .quick-actions {
-  margin-bottom: 60px;
+  margin-bottom: 48px;
 }
 
 .section-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: white;
-  text-align: center;
-  margin-bottom: 40px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-size: 20px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 24px 0;
 }
 
 .action-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
 }
 
 .action-card {
-  background: white;
-  border-radius: 16px;
-  padding: 32px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 24px 20px;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .action-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  background-color: #EFF6FF;
+  border-color: #BFDBFE;
+  transform: translateY(-2px);
 }
 
 .card-icon {
-  font-size: 3rem;
-  margin-bottom: 16px;
+  font-size: 32px;
+  color: #3B82F6;
+  margin-bottom: 14px;
 }
 
-.exam-icon { color: #667eea; }
-.practice-icon { color: #ff6b6b; }
-.ranking-icon { color: #ffa500; }
-.analysis-icon { color: #51cf66; }
-.video-icon { color: #ffa500; }
-.interview-icon { color: #ff6b6b; }
-.mock-icon { color: #ffa500; }
-
 .action-card h3 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: #333;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 6px 0;
 }
 
 .action-card p {
-  color: #666;
-  line-height: 1.6;
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0;
+  line-height: 1.5;
 }
 
-/* 热门题目区域 */
 .popular-section {
-  margin-bottom: 60px;
+  margin-bottom: 48px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .popular-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .popular-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .popular-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  background-color: #F8FAFC;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .question-type {
@@ -868,29 +753,53 @@ onMounted(() => {
   margin-bottom: 12px;
 }
 
+.question-type :deep(.el-tag) {
+  font-size: 11px;
+  border-radius: 4px;
+}
+
+.question-type :deep(.el-tag--primary) {
+  background-color: #EFF6FF;
+  border-color: #BFDBFE;
+  color: #2563EB;
+}
+
+.question-type :deep(.el-tag--success) {
+  background-color: #ECFDF5;
+  border-color: #A7F3D0;
+  color: #059669;
+}
+
+.question-type :deep(.el-tag--warning) {
+  background-color: #FFFBEB;
+  border-color: #FEF3C7;
+  color: #D97706;
+}
+
 .question-title {
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
+  color: #1E293B;
+  margin: 0 0 8px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-height: 1.5;
 }
 
 .question-category {
-  font-size: 0.875rem;
-  color: #666;
-  margin-bottom: 12px;
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0 0 12px 0;
 }
 
 .question-stats {
   display: flex;
   justify-content: space-between;
-  font-size: 0.75rem;
-  color: #999;
+  font-size: 12px;
+  color: #94A3B8;
 }
 
 .question-stats span {
@@ -899,82 +808,79 @@ onMounted(() => {
   gap: 4px;
 }
 
-/* 统计数据区域 */
 .stats-section {
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  padding: 32px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 24px 20px;
   text-align: center;
-  color: white;
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .stat-icon {
-  font-size: 2.5rem;
-  margin-bottom: 16px;
-  opacity: 0.8;
+  font-size: 26px;
+  color: #3B82F6;
+  margin-bottom: 12px;
 }
 
 .stat-number {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-size: 26px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 4px 0;
 }
 
 .stat-label {
-  font-size: 1rem;
-  opacity: 0.9;
+  font-size: 12px;
+  color: #94A3B8;
+  margin: 0;
 }
 
-/* 公告详情对话框 */
 .notice-detail-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #E2E8F0;
 }
 
 .notice-detail-time {
-  color: #999;
-  font-size: 0.875rem;
+  color: #94A3B8;
+  font-size: 12px;
 }
 
 .notice-detail-content {
-  line-height: 1.8;
-  color: #333;
+  line-height: 1.7;
+  color: #64748B;
+  font-size: 14px;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
   .navbar {
-    padding: 0 20px;
+    padding: 0 16px;
   }
   
   .nav-actions {
     gap: 8px;
   }
   
-  .nav-actions .el-button span {
+  .nav-actions :deep(.el-button) {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+  
+  .nav-actions :deep(.el-button span) {
     display: none;
   }
   
@@ -987,32 +893,12 @@ onMounted(() => {
     gap: 20px;
   }
   
-  .carousel-section .el-carousel {
-    height: 280px !important;  /* 移动端轮播图高度和桌面端保持一致 */
-  }
-  
-  .banner-item {
-    height: 100% !important;
-  }
-  
-  .banner-img {
-    height: 100% !important;
-  }
-  
-  .banner-title {
-    font-size: 1.4rem;  /* 移动端调整标题字体 */
-  }
-  
-  .banner-desc {
-    font-size: 0.95rem;  /* 移动端调整描述字体 */
-  }
-  
   .section-title {
-    font-size: 1.5rem;
+    font-size: 18px;
   }
   
   .action-cards {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
   
   .popular-grid {
@@ -1022,6 +908,14 @@ onMounted(() => {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  .action-card {
+    padding: 20px 16px;
+  }
+  
+  .card-icon {
+    font-size: 24px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1030,45 +924,15 @@ onMounted(() => {
   }
   
   .action-card {
-    padding: 24px 16px;
+    padding: 16px 12px;
+  }
+  
+  .action-card h3 {
+    font-size: 13px;
+  }
+  
+  .action-card p {
+    font-size: 11px;
   }
 }
-
-.banner-text-content {
-  /* 一行紧凑显示，居中对齐 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 14px;
-  margin-bottom: 8px;
-}
-.banner-text-content .banner-title,
-.banner-text-content .banner-desc {
-  background: none; /* 去除底色 */
-  color: #222;
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin: 0;
-  padding: 0;
-  display: inline;
-  text-shadow: none;
-}
-.banner-text-content .banner-title {
-  font-weight: bold;
-  font-size: 1.25rem;
-  margin-right: 8px;
-}
-.banner-text-content .banner-desc {
-  background: none; /* 去除底色 */
-  color: #444;
-  font-size: 1.1rem;
-  margin: 0;
-  display: inline;
-}
-.banner-text-content .el-button {
-  margin-left: 12px;
-  padding: 4px 18px;
-  font-size: 1rem;
-}
-</style> 
+</style>

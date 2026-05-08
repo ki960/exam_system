@@ -211,7 +211,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // 设置页面标题
   if (to.meta.title) {
-    document.title = to.meta.title + ' - 智能学习平台'
+    document.title = to.meta.title + ' - AI链习室'
   }
 
   // 防止从考试结果页面返回到考试页面的逻辑
@@ -239,7 +239,7 @@ router.beforeEach((to, from, next) => {
 
 // 路由后置守卫 - 设置页面标题  // 每次路由切换后设置页面标题
 router.afterEach((to) => {
-  document.title = to.meta.title + ' - 智能学习平台'  // 更改标题后缀
+  document.title = to.meta.title + ' - AI链习室'  // 更改标题后缀
 })
 
 export default router 
