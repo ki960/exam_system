@@ -93,7 +93,7 @@ Doubao AI  - AI大模型（智能出题、主观题批阅）
 | 模块名称 | 核心功能 | 技术亮点 |
 | :--- | :--- | :--- |
 | **题目管理** | 题目CRUD、多题型支持（单选/多选/判断/简答）、题目分类、难度管理 | Redis缓存分类数据、N+1查询优化、批量操作 |
-| **题目批量操作** | Excel批量导入导出、AI智能生成题目 | Apache POI处理Excel、Kimi AI接口集成、事务管理 |
+| **题目批量操作** | Excel批量导入导出、AI智能生成题目 | Apache POI处理Excel、Doubao AI接口集成、事务管理 |
 | **试卷管理** | 手动组卷、AI智能组卷、试卷编辑、发布/停止、草稿管理 | 智能组卷算法、事务管理、状态机控制 |
 | **考试管理** | 考试记录查询、多条件筛选、成绩详情、数据统计 | 复杂查询优化、数据聚合、分页查询 |
 | **系统管理** | 用户管理、公告管理、轮播图管理、视频管理、数据统计 | JWT权限控制、MinIO文件上传、富文本编辑 |
@@ -114,7 +114,7 @@ Doubao AI  - AI大模型（智能出题、主观题批阅）
 | **主观题自动批阅** | 关键词匹配 + Doubao AI辅助评分，结合参考答案和学生答案给出评分和建议 |
 | **热点数据性能优化** | Redis缓存题目分类、试卷列表等热点数据，设置合理过期时间 |
 | **大文件上传与存储** | 基于MinIO实现分布式对象存储，支持断点续传和文件预览 |
-| **双端权限隔离** | 拦截器按路径前缀统一校验，结合AOP注解式权限控制，防止越权访问 |
+| **双端权限隔离** | 拦截器按路径前缀统一校验，防止越权访问 |
 
 ## 六、开源协议与贡献
 
@@ -127,25 +127,28 @@ ai-chain-study-room
 ├── exam-system-backend    # 后端项目（Spring Boot）
 │   ├── src/main/java
 │   │   └── com/atguigu/exam
-│   │       ├── controller  # Controller（按端分包：admin/user/common）
+│   │       ├── controller  # 控制层（按端分包：admin/user/common）
 │   │       ├── service     # 业务逻辑层
 │   │       ├── mapper      # 数据访问层
-│   │       ├── entity      # 实体类
-│   │       ├── config      # 配置类
-│   │       ├── interceptor # 拦截器（JWT认证）
-│   │       └── utils       # 工具类
+│   │       ├── entity      # 数据库实体类
+│   │       ├── config      # 全局配置类
+│   │       ├── interceptor # 拦截器（JWT身份认证）
+│   │       ├── common      # 公共常量、枚举、统一返回封装
+│   │       └── utils       # 通用工具类
 │   └── src/main/resources
-│       ├── mapper          # MyBatis映射文件
-│       └── application.yml # 配置文件
-├── exam-system-web         # 前端项目（Vue3 + Vite）
+│       ├── mapper          # MyBatis XML映射文件
+│       └── application.yml # 项目核心配置文件
+├── exam-system-web         # 前端项目（Vue3 + Vite + Element Plus）
 │   ├── src
-│   │   ├── api             # API接口（按端分包：admin/user/common）
-│   │   ├── views           # 页面组件
-│   │   ├── components      # 公共组件
-│   │   ├── router          # 路由配置
-│   │   ├── store           # 状态管理（Pinia）
-│   │   └── utils           # 工具类
-│   └── package.json
-├── sql                     # 数据库脚本
-└── docker-compose.yml      # Docker部署文件
+│   │   ├── api             # 接口请求（按端分包：admin/user/common）
+│   │   ├── views           # 业务页面组件
+│   │   ├── components      # 全局公共组件
+│   │   ├── router          # Vue路由配置
+│   │   ├── store           # Pinia全局状态管理
+│   │   ├── utils           # 前端工具类（axios封装等）
+│   │   ├── assets          # 静态资源（图片、样式）
+│   │   └── App.vue         # 根组件
+│   ├── index.html          # 入口HTML文件
+│   ├── vite.config.js      # Vite构建配置
+│   └── package.json        # 依赖管理与脚本配置
 ```
