@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.admin;
 
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.Video;
@@ -17,7 +17,7 @@ import java.util.Map;
  * 管理端视频控制器
  * 处理管理员相关的视频功能
  */
-@RestController
+@RestController("adminVideoAdminController")
 @RequestMapping("/api/admin/videos")
 @Tag(name = "视频管理(管理端)", description = "管理端视频相关操作，包括视频管理、审核、统计等功能")
 public class VideoAdminController {

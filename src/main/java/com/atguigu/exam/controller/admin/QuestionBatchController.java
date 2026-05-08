@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.admin;
 
 
 import com.atguigu.exam.common.Result;
@@ -25,8 +25,8 @@ import java.util.List;
  * 包括Excel导入、AI生成题目、批量验证等功能
  */
 @Slf4j  // 日志注解
-@RestController  // REST控制器，返回JSON数据
-@RequestMapping("/api/questions/batch")  // 题目批量操作API路径前缀
+@RestController("adminQuestionBatchController")  // REST控制器，返回JSON数据
+@RequestMapping("/api/admin/questions/batch")  // 题目批量操作API路径前缀
 @CrossOrigin(origins = "*")  // 允许跨域访问
 @Tag(name = "题目批量操作", description = "题目批量管理相关操作，包括Excel导入、AI生成题目、批量验证等功能")  // Swagger API分组
 public class QuestionBatchController {

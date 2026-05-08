@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.common;
 
 
 import com.atguigu.exam.common.Result;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 包括系统概览数据、各种统计信息等功能
  */
 @RestController  // REST控制器，返回JSON数据
-@RequestMapping("/api/stats")  // 统计API路径前缀
+@RequestMapping("/api/common/stats")  // 统计API路径前缀
 @CrossOrigin(origins = "*")  // 允许跨域访问
 @Tag(name = "数据统计", description = "系统统计相关操作，包括概览数据、图表统计等功能")  // Swagger API分组
 public class StatsController {

@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.user;
 
 
 import com.atguigu.exam.common.Result;
@@ -17,7 +17,7 @@ import java.util.List;
  * 处理视频分类管理相关的HTTP请求
  */
 @RestController
-@RequestMapping("/api/video-categories")
+@RequestMapping("/api/user/video-categories")
 @Tag(name = "视频分类管理", description = "视频分类相关操作，包括分类的增删改查、树形结构管理等功能")
 public class VideoCategoryController {
 
@@ -78,40 +78,4 @@ public class VideoCategoryController {
         return Result.success(videoCategoryService.getCategoryById(id));
     }
 
-    /**
-     * 添加分类
-     * @param category 分类对象
-     * @return 操作结果
-     */
-    @PostMapping
-    @Operation(summary = "添加新分类", description = "创建新的视频分类，支持设置父分类实现层级结构")
-    public Result<Void> addCategory(@RequestBody VideoCategory category) {
-        videoCategoryService.addCategory(category);
-        return Result.success(null);
-    }
-
-    /**
-     * 更新分类
-     * @param category 分类对象
-     * @return 操作结果
-     */
-    @PutMapping
-    @Operation(summary = "更新分类信息", description = "修改分类的名称、描述、排序等信息")
-    public Result<Void> updateCategory(@RequestBody VideoCategory category) {
-        videoCategoryService.updateCategory(category);
-        return Result.success(null);
-    }
-
-    /**
-     * 删除分类
-     * @param id 分类ID
-     * @return 操作结果
-     */
-    @DeleteMapping("/{id}")
-    @Operation(summary = "删除分类", description = "删除指定的视频分类，注意：删除前需确保分类下没有视频")
-    public Result<Void> deleteCategory(
-            @Parameter(description = "分类ID") @PathVariable Long id) {
-        videoCategoryService.deleteCategory(id);
-        return Result.success(null);
-    }
 } 

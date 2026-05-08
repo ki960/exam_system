@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.admin;
 
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.Paper;
@@ -6,16 +6,13 @@ import com.atguigu.exam.service.PaperService;
 import com.atguigu.exam.vo.AiPaperVo;
 import com.atguigu.exam.vo.PaperVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +21,8 @@ import java.util.List;
  * 试卷控制器 - 处理试卷管理相关的HTTP请求
  * 包括试卷的CRUD操作、AI智能组卷、状态管理等功能
  */
-@RestController  // REST控制器，返回JSON数据
-@RequestMapping("/api/papers")  // 试卷API路径前缀
+@RestController("adminPaperController") // REST控制器，返回JSON数据
+@RequestMapping("/api/admin/paperspapers")  // 试卷API路径前缀
 @Tag(name = "试卷管理", description = "试卷相关操作，包括创建、查询、更新、删除，以及AI智能组卷功能")  // Swagger API分组
 @CrossOrigin(origins = "*")
 @Slf4j

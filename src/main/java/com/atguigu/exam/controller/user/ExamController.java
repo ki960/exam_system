@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.user;
 
 
 import com.atguigu.exam.common.Result;
@@ -20,7 +20,7 @@ import java.util.List;
  * 包括开始考试、提交答案、AI批阅、成绩查询等功能
  */
 @RestController  // REST控制器，返回JSON数据
-@RequestMapping("/api/exams")  // 考试API路径前缀
+@RequestMapping("/api/user/exams")  // 考试API路径前缀
 @CrossOrigin(origins = "*")  // 允许跨域访问
 @Slf4j
 @Tag(name = "考试管理", description = "考试流程相关操作，包括开始考试、答题提交、AI批阅、成绩查询等功能")  // Swagger API分组

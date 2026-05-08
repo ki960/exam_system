@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.user;
 
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.Question;
@@ -12,11 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 题目控制器 - 处理题目相关的HTTP请求
@@ -40,7 +36,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController  // @Controller + @ResponseBody，表示这是一个REST控制器，返回JSON数据
-@RequestMapping("/api/questions")  // 设置基础URL路径，所有方法的URL都以此开头
+@RequestMapping("/api/user/questions")  // 设置基础URL路径，所有方法的URL都以此开头
 @CrossOrigin(origins = "*")  // 允许跨域访问，解决前后端分离开发中的跨域问题
 @Tag(name = "题目管理", description = "题目相关的增删改查操作，包括分页查询、随机获取、热门推荐等功能")  // Swagger标签，用于分组显示API
 public class QuestionController {
@@ -116,75 +112,7 @@ public class QuestionController {
         log.info("查询题目成功：{}", question);
         return Result.success(question);
     }
-    
-    /**
-     * 创建新题目
-     * 
-     * RESTful API教学：
-     * - HTTP方法：POST表示创建操作
-     * - 请求体：通过@RequestBody接收JSON格式的请求体
-     * - 数据绑定：Spring自动将JSON转换为Java对象
-     * 
-     * 事务处理：
-     * - 题目创建涉及多张表（题目、选项、答案）
-     * - Service层方法应该使用@Transactional保证数据一致性
-     * 
-     * @param question 前端提交的题目数据（JSON格式）
-     * @return 创建成功后的题目信息
-     */
-    @PostMapping  // 映射POST请求到/api/questions
-    @Operation(summary = "创建新题目", description = "添加新的考试题目，支持选择题、判断题、简答题等多种题型")  // API描述
-    public Result<Question> createQuestion(@RequestBody Question question) {
-        questionService.saveQuestion(question);
-        log.info("创建题目成功：{}", question);
-        return Result.success(question);
-    }
-    
-    /**
-     * 更新题目信息
-     * 
-     * RESTful API教学：
-     * - HTTP方法：PUT表示更新操作
-     * - URL设计：PUT /api/questions/{id} 语义明确
-     * - 参数组合：路径参数(ID) + 请求体(数据)
-     * 
-     * @param id 要更新的题目ID
-     * @param question 更新的题目数据
-     * @return 更新后的题目信息
-     */
-    @PutMapping("/{id}")  // 处理PUT请求
-    @Operation(summary = "更新题目信息", description = "修改指定题目的内容、选项、答案等信息")  // API描述
-    public Result<Question> updateQuestion(
-            @Parameter(description = "题目ID") @PathVariable Long id, 
-            @RequestBody Question question) {
-        questionService.updateQuestion(id, question);
-        log.info("更新题目成功：{}", question);
-        return Result.success(null);
-    }
-    
-    /**
-     * 删除题目
-     * 
-     * RESTful API教学：
-     * - HTTP方法：DELETE表示删除操作
-     * - 响应设计：删除成功返回确认消息，失败返回错误信息
-     * 
-     * 注意事项：
-     * - 删除前应检查题目是否被试卷引用
-     * - 考虑使用逻辑删除而非物理删除，保留数据完整性
-     * 
-     * @param id 要删除的题目ID
-     * @return 删除操作结果
-     */
-    @DeleteMapping("/{id}")  // 处理DELETE请求
-    @Operation(summary = "删除题目", description = "根据ID删除指定的题目，包括关联的选项和答案数据")  // API描述
-    public Result<String> deleteQuestion(
-            @Parameter(description = "题目ID") @PathVariable Long id) {
-        questionService.romoveQuestion(id);
-        log.info("删除题目{}成功", id);
-        return Result.success("题目删除成功");
-    }
-    
+
     /**
      * 根据分类查询题目列表
      * 
@@ -284,27 +212,4 @@ public class QuestionController {
         return Result.success(popularQuestions);
 
     }
-
-    /**
-     * 刷新热门题目缓存 - 管理员功能
-     * 
-     * 业务场景：
-     * - 系统初始化：首次部署时初始化热门题目数据
-     * - 数据重置：清除历史访问记录，重新开始统计
-     * - 手动干预：管理员可以强制更新热门题目排名
-     * 
-     * 技术实现：
-     * - 清除缓存：删除Redis中的访问计数数据
-     * - 重建缓存：为所有题目设置初始访问计数
-     * - 权限控制：仅管理员可操作（前端负责控制）
-     * 
-     * @return 刷新结果，包含处理的题目数量
-     */
-    @PostMapping("/popular/refresh")
-    @Operation(summary = "刷新热门题目缓存", description = "管理员功能，重置或初始化热门题目的访问计数")
-    public Result<Integer> refreshPopularQuestions() {
-
-        return Result.error("刷新热门题目缓存失败");
-    }
-
-} 
+}

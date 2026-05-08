@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.user;
 
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.Category;
@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
  * 包括分类的增删改查、树形结构展示等功能
  */
 @RestController  // REST控制器，返回JSON数据
-@RequestMapping("/api/categories")  // 分类API路径前缀
+@RequestMapping("/api/user/categories")  // 分类API路径前缀
 @Slf4j
 @CrossOrigin
 @Tag(name = "分类管理", description = "题目分类相关操作，包括分类的增删改查、树形结构管理等功能")  // Swagger API分组

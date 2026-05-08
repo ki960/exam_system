@@ -1,4 +1,4 @@
-package com.atguigu.exam.controller;
+package com.atguigu.exam.controller.user;
 
 import com.atguigu.exam.common.Result;
 import com.atguigu.exam.entity.Video;
@@ -21,7 +21,7 @@ import java.util.Map;
  * 处理用户端视频浏览、观看、点赞、投稿等功能
  */
 @RestController
-@RequestMapping("/api/videos")
+@RequestMapping("/api/user/videos")
 @Tag(name = "视频管理(用户端)", description = "用户端视频相关操作，包括视频浏览、观看、点赞、投稿等功能")
 @CrossOrigin(origins = "*")
 public class VideoController {
